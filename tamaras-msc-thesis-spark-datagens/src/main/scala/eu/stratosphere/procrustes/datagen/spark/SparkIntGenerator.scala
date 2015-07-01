@@ -4,9 +4,7 @@ import eu.stratosphere.procrustes.datagen.util.Distributions._
 import eu.stratosphere.procrustes.datagen.util.RanHash
 import org.apache.spark.{SparkConf, SparkContext}
 
-import scala.util.Random
-
-class SparkIntGenerator(master: String, numTasks: Int, tuplesPerTask: Int, keyDist: Distribution, pay: Int, output: String) {
+class SparkIntGenerator(master: String, numTasks: Int, tuplesPerTask: Long, keyDist: Distribution, output: String) {
 
   import SparkIntGenerator.SEED
 
@@ -14,7 +12,6 @@ class SparkIntGenerator(master: String, numTasks: Int, tuplesPerTask: Int, keyDi
     val conf = new SparkConf().setAppName("integer-generator").setMaster(master)
     val sc = new SparkContext(conf)
     val n = tuplesPerTask
-    val s = new Random(SEED).nextString(pay)
     val seed = SEED
     val kd = this.keyDist
 
@@ -24,9 +21,25 @@ class SparkIntGenerator(master: String, numTasks: Int, tuplesPerTask: Int, keyDi
       val rand = new RanHash(seed)
       rand.skipTo(seed + randStart)
 
-      for (j <- partitionStart until (partitionStart + n)) yield {
+      println(s"task $i generating the range from $partitionStart until ${partitionStart + n}")
+
+//      val result = new Traversable[Int] {
+//        override def foreach[U](f: (Int) => U): Unit = {
+//          for (j <- partitionStart until (partitionStart + n)) yield {
+//            if (j % 1000 == 0) println(s"$i at pos $j (${(j - partitionStart) / (n * 1.0)}% ready)")
+//            Math.round(kd.sample(rand))
+//          }
+//        }
+//      }
+
+      val result = for (j <- partitionStart until (partitionStart + n)) yield {
+        if (j % 1000 == 0) println(s"$i at pos $j (${(j - partitionStart) / (n * 1.0)}% ready)")
         Math.round(kd.sample(rand))
       }
+
+      println("DONE!!!!")
+
+      result
     })
 
     dataset.saveAsTextFile(output)
@@ -42,11 +55,11 @@ object SparkIntGenerator {
     val Uniform = """Uniform\[(\d+)\]""".r
     val Gaussian = """Gaussian\[(\d+),(\d+)\]""".r
     val Pareto = """Pareto\[(\d+)\]""".r
-    val TruncIntPareto = """TruncPareto\[(\d+),(\d+)\]""".r
+    val TruncIntPareto = """TruncIntPareto\[(\d+),(\d+)\]""".r
   }
 
   def main(args: Array[String]): Unit = {
-    if (args.length != 6) {
+    if (args.length != 5) {
       throw new RuntimeException("Arguments count != 6")
     }
 
@@ -54,9 +67,8 @@ object SparkIntGenerator {
     val numTasks: Int = args(1).toInt
     val tuplesPerTask: Int = args(2).toInt
     val keyDist: Distribution = parseDist(args(3))
-    val pay: Int = args(4).toInt
-    val output: String = args(5)
-    val generator = new SparkIntGenerator(master, numTasks, tuplesPerTask, keyDist, pay, output)
+    val output: String = args(4)
+    val generator = new SparkIntGenerator(master, numTasks, tuplesPerTask, keyDist, output)
     generator.run()
   }
 

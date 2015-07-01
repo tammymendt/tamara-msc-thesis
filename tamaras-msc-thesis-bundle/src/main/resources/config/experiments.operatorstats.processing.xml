@@ -9,7 +9,7 @@
 	<bean id="datagen.spark.int" class="eu.stratosphere.peel.extensions.spark.beans.job.SparkJob">
 		<constructor-arg name="runner" ref="spark-1.3.1"/>
 		<constructor-arg name="command">
-			<value>--class eu.stratosphere.procrustes.datagen.spark.SparkIntGenerator ${app.path.datagens}/procrustes-datagen-1.0-SNAPSHOT.jar ${system.spark.config.defaults.spark.master} ${system.default.config.parallelism.total} ${datagen.number.tuples} ${datagen.distribution} 5 ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
+			<value>--class eu.stratosphere.procrustes.datagen.spark.SparkIntGenerator ${app.path.datagens}/tamaras-msc-thesis-spark-datagens-1.0-SNAPSHOT.jar ${system.spark.config.defaults.spark.master} ${system.default.config.parallelism.total} ${datagen.number.tuples} ${datagen.distribution} ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
 		</constructor-arg>
 	</bean>
 
@@ -33,7 +33,7 @@
 
 	<bean id="operator.stats.processing" parent="experiment.flink-0.9-tmendt" abstract="true">
 		<constructor-arg name="command">
-			<value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.jobs}/procrustes-flink-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm}</value>
+			<value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm}</value>
 		</constructor-arg>
 		<constructor-arg name="input">
 			<set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
@@ -47,7 +47,7 @@
 
 	<bean id="heavy.hitters.experiment" parent="experiment.flink-0.9-tmendt" abstract="true">
 		<constructor-arg name="command">
-			<value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitterNoAccumulator ${app.path.jobs}/procrustes-flink-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.cardinality}</value>
+			<value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitterNoAccumulator ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.cardinality}</value>
 		</constructor-arg>
 		<constructor-arg name="input">
 			<set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
@@ -182,7 +182,7 @@
 							datagen.path = 2/pareto
 							datagen.number.tuples = 15625000
 							system.default.config.parallelism.total = 32
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							datagen.parallelism = ${system.default.config.parallelism.total}
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 							system.default.config.slaves = ["cloud-8", "cloud-9"]
@@ -197,7 +197,7 @@
 							datagen.path = 2/pareto
 							datagen.number.tuples = 15625000
 							system.default.config.parallelism.total = 32
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							datagen.parallelism = ${system.default.config.parallelism.total}
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 							system.default.config.slaves = ["cloud-8", "cloud-9"]
@@ -311,7 +311,7 @@
 							datagen.number.tuples = 15625000
 							system.default.config.parallelism.total = 64
 							datagen.parallelism = ${system.default.config.parallelism.total}
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 						</value>
 					</constructor-arg>
@@ -325,7 +325,7 @@
 							datagen.number.tuples = 15625000
 							system.default.config.parallelism.total = 64
 							datagen.parallelism = ${system.default.config.parallelism.total}
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 						</value>
 					</constructor-arg>
@@ -342,6 +342,7 @@
 							datagen.parallelism = ${system.default.config.parallelism.total}
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 							system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            system.spark.config.slaves = ["cloud-7", "cloud-8", "cloud-9", "cloud-10"]
 						</value>
 					</constructor-arg>
 				</bean>
@@ -443,7 +444,7 @@
 							datagen.path = 10/pareto
 							datagen.number.tuples = 78125000
 							system.default.config.parallelism.total = 32
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							datagen.parallelism = ${system.default.config.parallelism.total}
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 							system.default.config.slaves = ["cloud-8", "cloud-9"]
@@ -458,7 +459,7 @@
 							datagen.path = 10/pareto
 							datagen.number.tuples = 78125000
 							system.default.config.parallelism.total = 32
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							datagen.parallelism = ${system.default.config.parallelism.total}
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 							system.default.config.slaves = ["cloud-8", "cloud-9"]
@@ -572,7 +573,7 @@
 							datagen.number.tuples = 78125000
 							system.default.config.parallelism.total = 64
 							datagen.parallelism = ${system.default.config.parallelism.total}
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 						</value>
 					</constructor-arg>
@@ -586,7 +587,7 @@
 							datagen.number.tuples = 78125000
 							system.default.config.parallelism.total = 64
 							datagen.parallelism = ${system.default.config.parallelism.total}
-							datagen.distribution = "TruncPareto[1,50]"
+							datagen.distribution = "TruncIntPareto[1,50]"
 							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
 						</value>
 					</constructor-arg>
