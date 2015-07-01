@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>eu.stratosphere</groupId>
+        <artifactId>tamaras-msc-thesis</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>tamaras-msc-thesis-bundle</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Peel -->
+        <peel.version>1.0-SNAPSHOT</peel.version>
+    </properties>
+
+    <dependencies>
+        <!-- bundle jars -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tamaras-msc-thesis-spark-datagens</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tamaras-msc-thesis-spark-jobs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tamaras-msc-thesis-flink-jobs</artifactId>
+        </dependency>
+
+        <!-- Peel -->
+        <dependency>
+            <groupId>eu.stratosphere</groupId>
+            <artifactId>peel-core</artifactId>
+            <version>${peel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.stratosphere</groupId>
+            <artifactId>peel-extensions</artifactId>
+            <version>${peel.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>tamaras-msc-thesis</finalName>
+                    <descriptors>
+                        <descriptor>src/main/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

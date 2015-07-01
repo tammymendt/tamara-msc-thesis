@@ -1,0 +1,151 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd">
+
+    <id>bin</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <!-- copy all jar files and their dependencies -->
+    <dependencySets>
+        <!-- lib -->
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+            <useProjectArtifact>true</useProjectArtifact>
+            <useProjectAttachments>false</useProjectAttachments>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <useTransitiveFiltering>true</useTransitiveFiltering>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+            <excludes>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-spark-datagens</exclude>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-spark-jobs</exclude>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-flink-jobs</exclude>
+            </excludes>
+        </dependencySet>
+        <!-- datagens -->
+        <dependencySet>
+            <outputDirectory>datagens</outputDirectory>
+            <unpack>false</unpack>
+            <useProjectArtifact>true</useProjectArtifact>
+            <useProjectAttachments>false</useProjectAttachments>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+            <includes>
+                <include>eu.stratosphere:tamaras-msc-thesis-spark-datagens</include>
+            </includes>
+        </dependencySet>
+        <!-- jobs -->
+        <dependencySet>
+            <outputDirectory>jobs</outputDirectory>
+            <unpack>false</unpack>
+            <useProjectArtifact>true</useProjectArtifact>
+            <useProjectAttachments>false</useProjectAttachments>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+            <includes>
+                <include>eu.stratosphere:tamaras-msc-thesis-flink-jobs</include>
+                <include>eu.stratosphere:tamaras-msc-thesis-spark-jobs</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <!-- create an empty config directory -->
+        <fileSet>
+            <directory>src/main/resources/config</directory>
+            <outputDirectory>config</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <!-- create an empty datasets directory -->
+        <fileSet>
+            <directory>src/main/resources/datasets</directory>
+            <outputDirectory>datasets</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <!-- create an empty downloads directory -->
+        <fileSet>
+            <directory>src/main/resources/downloads</directory>
+            <outputDirectory>downloads</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <!-- create an empty log directory -->
+        <fileSet>
+            <directory>src/main/assembly</directory>
+            <outputDirectory>log</outputDirectory>
+            <fileMode>0644</fileMode>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+        <!-- create an empty results directory -->
+        <fileSet>
+            <directory>src/main/assembly</directory>
+            <outputDirectory>results</outputDirectory>
+            <fileMode>0644</fileMode>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+        <!-- create an empty systems directory -->
+        <fileSet>
+            <directory>src/main/assembly</directory>
+            <outputDirectory>systems</outputDirectory>
+            <fileMode>0644</fileMode>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+        <!-- create an empty util directory -->
+        <fileSet>
+            <directory>src/main/resources/util</directory>
+            <outputDirectory>util</outputDirectory>
+            <fileMode>0644</fileMode>
+            <excludes>
+                <exclude>**/*.sh</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+
+    <files>
+        <!-- copy bash file -->
+        <file>
+            <source>src/main/resources/bin/peel.sh</source>
+            <destName>peel.sh</destName>
+            <fileMode>0755</fileMode>
+        </file>
+        <!-- copy util bash files -->
+        <file>
+            <source>src/main/resources/util/sync/fetch_all.sh</source>
+            <destName>util/sync/fetch_all.sh</destName>
+            <fileMode>0755</fileMode>
+        </file>
+        <file>
+            <source>src/main/resources/util/sync/fetch_log.sh</source>
+            <destName>util/sync/fetch_log.sh</destName>
+            <fileMode>0755</fileMode>
+        </file>
+        <file>
+            <source>src/main/resources/util/sync/push_all.sh</source>
+            <destName>util/sync/push_all.sh</destName>
+            <fileMode>0755</fileMode>
+        </file>
+
+        <!-- create a VERSION file to the project root -->
+        <file>
+            <source>src/main/resources/VERSION</source>
+            <destName>VERSION</destName>
+            <fileMode>0644</fileMode>
+            <filtered>true</filtered>
+        </file>
+    </files>
+
+</assembly>
