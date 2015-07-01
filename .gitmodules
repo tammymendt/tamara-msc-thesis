@@ -1,0 +1,3 @@
+[submodule "tamaras-msc-thesis-bundle/src/main/resources/config/cloud-7"]
+	path = tamaras-msc-thesis-bundle/src/main/resources/config/cloud-7
+	url = git@github.com:TU-Berlin-DIMA/cloud-7.git
