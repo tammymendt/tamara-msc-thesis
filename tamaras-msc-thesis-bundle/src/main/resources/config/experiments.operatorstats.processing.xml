@@ -77,7 +77,7 @@
                         <value>
                             # common system parameters
                             system.default.config.parallelism.total = 160
-                            system.default.config.slaves = env.hosts.slaves.only20
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
@@ -93,7 +93,7 @@
                         <value>
                             # common system parameters
                             system.default.config.parallelism.total = 80
-                            system.default.config.slaves = env.hosts.slaves.only10
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
@@ -109,7 +109,7 @@
                         <value>
                             # common system parameters
                             system.default.config.parallelism.total = 40
-                            system.default.config.slaves = env.hosts.slaves.only05
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
