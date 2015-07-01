@@ -66,7 +66,7 @@
     * Experiments
     *************************************************************************-->
 
-    <!-- processing scale-out (on 5, 10, and 20 nodes) with 10 million elements per node -->
+    <!-- processing scale-out (on 5, 10, and 20 nodes) with 200 million elements per node -->
     <bean id="processing.scale-out.10M" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <!-- no stats collection (none.XX) -->
@@ -81,8 +81,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 200M
-                            datagen.tuples.per.task = 1250000
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 25000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -97,8 +97,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 100M
-                            datagen.tuples.per.task = 1250000
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 25000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -113,8 +113,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 50M
-                            datagen.tuples.per.task = 1250000
+                            datagen.path = 1B
+                            datagen.tuples.per.task = 25000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
