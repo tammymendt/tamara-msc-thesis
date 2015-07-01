@@ -12,7 +12,7 @@
 
     <properties>
         <!-- Scala -->
-        <scala.version>2.10.2</scala.version>
+        <scala.version>2.10.4</scala.version>
         <scala.tools.version>2.10</scala.tools.version>
 
         <!-- Spark -->
@@ -26,16 +26,19 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
             <version>${scala.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-reflect</artifactId>
             <version>${scala.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Spark -->
