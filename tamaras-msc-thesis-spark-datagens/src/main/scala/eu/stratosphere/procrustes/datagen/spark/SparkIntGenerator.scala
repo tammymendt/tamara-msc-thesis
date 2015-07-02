@@ -9,7 +9,11 @@ class SparkIntGenerator(master: String, numTasks: Int, tuplesPerTask: Long, keyD
   import SparkIntGenerator.SEED
 
   def run() = {
-    val conf = new SparkConf().setAppName("integer-generator").setMaster(master)
+    val conf = new SparkConf()
+      .setMaster(master)
+      .setAppName("integer-generator")
+      .set("spark.storage.memoryFraction", "0.4")
+      .set("spark.executor.extraJavaOptions", "-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps")
     val sc = new SparkContext(conf)
     val n = tuplesPerTask
     val seed = SEED
@@ -17,29 +21,17 @@ class SparkIntGenerator(master: String, numTasks: Int, tuplesPerTask: Long, keyD
 
     val dataset = sc.parallelize(0 until numTasks, numTasks).flatMap(i => {
       val partitionStart = n * i // the index of the first point in the current partition
-      val randStart = partitionStart
-      val rand = new RanHash(seed)
-      rand.skipTo(seed + randStart)
 
-      println(s"task $i generating the range from $partitionStart until ${partitionStart + n}")
-
-//      val result = new Traversable[Int] {
-//        override def foreach[U](f: (Int) => U): Unit = {
-//          for (j <- partitionStart until (partitionStart + n)) yield {
-//            if (j % 1000 == 0) println(s"$i at pos $j (${(j - partitionStart) / (n * 1.0)}% ready)")
-//            Math.round(kd.sample(rand))
-//          }
-//        }
-//      }
-
-      val result = for (j <- partitionStart until (partitionStart + n)) yield {
-        if (j % 1000 == 0) println(s"$i at pos $j (${(j - partitionStart) / (n * 1.0)}% ready)")
-        Math.round(kd.sample(rand))
+      // println(s"task $i generating the range from $partitionStart until ${partitionStart + n}")
+      new Traversable[Int] {
+        override def foreach[U](f: (Int) => U): Unit = {
+          val rand = new RanHash(seed + partitionStart)
+          for (j <- partitionStart until (partitionStart + n)) yield {
+            // if (j % 100000 == 0) println(s"$i at pos $j (${(j - partitionStart) / (n * 1.0)}% ready)")
+            Math.round(kd.sample(rand))
+          }
+        }
       }
-
-      println("DONE!!!!")
-
-      result
     })
 
     dataset.saveAsTextFile(output)

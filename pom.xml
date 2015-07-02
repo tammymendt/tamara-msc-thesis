@@ -40,17 +40,22 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>tamaras-msc-thesis-flink-datagens</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>tamaras-msc-thesis-spark-datagens</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>tamaras-msc-thesis-spark-jobs</artifactId>
+                <artifactId>tamaras-msc-thesis-flink-jobs</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>tamaras-msc-thesis-flink-jobs</artifactId>
+                <artifactId>tamaras-msc-thesis-spark-jobs</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -152,6 +157,7 @@
 
     <modules>
         <module>tamaras-msc-thesis-bundle</module>
+        <module>tamaras-msc-thesis-flink-datagens</module>
         <module>tamaras-msc-thesis-spark-datagens</module>
         <module>tamaras-msc-thesis-flink-jobs</module>
         <module>tamaras-msc-thesis-spark-jobs</module>

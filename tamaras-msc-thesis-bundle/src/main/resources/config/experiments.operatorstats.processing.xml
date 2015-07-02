@@ -7,6 +7,13 @@
     * Data Generators
     *************************************************************************-->
 
+    <bean id="datagen.flink.int" class="eu.stratosphere.peel.extensions.flink.beans.job.FlinkJob">
+        <constructor-arg name="runner" ref="flink-0.9.0"/>
+        <constructor-arg name="command">
+            <value>--class eu.stratosphere.procrustes.datagen.flink.FlinkIntGenerator ${app.path.datagens}/tamaras-msc-thesis-flink-datagens-1.0-SNAPSHOT.jar ${system.default.config.parallelism.total} ${datagen.tuples.per.task} ${datagen.distribution} ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
+        </constructor-arg>
+    </bean>
+
     <bean id="datagen.spark.int" class="eu.stratosphere.peel.extensions.spark.beans.job.SparkJob">
         <constructor-arg name="runner" ref="spark-1.3.1"/>
         <constructor-arg name="command">
@@ -19,7 +26,7 @@
     *************************************************************************-->
 
     <bean id="dataset.int" class="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
-        <constructor-arg name="src" ref="datagen.spark.int"/>
+        <constructor-arg name="src" ref="datagen.flink.int"/>
         <constructor-arg name="dst" value="${system.hadoop-2.path.input}/operatorstats/${datagen.path}"/>
         <constructor-arg name="fs" ref="hdfs-2.4.1"/>
     </bean>
@@ -66,11 +73,11 @@
     * Experiments
     *************************************************************************-->
 
-    <!-- processing scale-out (on 5, 10, and 20 nodes) with 200 million elements per node -->
-    <bean id="processing.scale-out.10M" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <!-- processing scale-out experiment (on 5, 10, and 20 nodes) with 400 million elements per node & uniform distribution -->
+    <bean id="processing.scale-out.400M.uniform" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
-            <!-- no stats collection (none.XX) -->
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <!-- 20 nodes -->
                 <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.20"/>
                     <constructor-arg name="config">
@@ -81,12 +88,110 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 25000000
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
                 </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="counter.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = counter
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="minmax.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = minmax
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="hyperloglog.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="linearc.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="countmin.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="lossy.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+
+                <!-- 10 nodes -->
                 <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.10"/>
                     <constructor-arg name="config">
@@ -97,12 +202,110 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 25000000
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
                 </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="counter.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = counter
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="minmax.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = minmax
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="hyperloglog.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="linearc.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="countmin.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="lossy.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+
+                <!-- 05 nodes -->
                 <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.05"/>
                     <constructor-arg name="config">
@@ -113,8 +316,104 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 1B
-                            datagen.tuples.per.task = 25000000
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="counter.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = counter
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="minmax.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = minmax
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="hyperloglog.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="linearc.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="countmin.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="lossy.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -123,548 +422,348 @@
         </constructor-arg>
     </bean>
 
-    <!-- Experiments for Testing on cloud-7-->
-
-    <!--Processing 2GB of data on two nodes -->
-    <bean id="processing.flatmap.cloud-7" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <!-- processing scale-out experiment (on 5, 10, and 20 nodes) with 400 million elements per node & skewed distribution -->
+    <bean id="processing.scale-out.400M.pareto" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
-            <list><!--
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.none"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = none
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.counter"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = counter
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.minmax"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = minmax
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.hyperloglog"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = hyperloglog
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.linearc"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = linearc
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.countmin"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = countmin
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.lossy"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = lossy
-							datagen.path = 2
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.countmin.pareto"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = countmin
-							datagen.path = 2/pareto
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "TruncIntPareto[1,50]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="2GB.stats.lossy.pareto"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = lossy
-							datagen.path = 2/pareto
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 32
-							datagen.distribution = "TruncIntPareto[1,50]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-							system.default.config.slaves = ["cloud-8", "cloud-9"]
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.none"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = none
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.counter"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = counter
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.minmax"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = minmax
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.hyperloglog"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = hyperloglog
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.linearc"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = linearc
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.countmin"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = countmin
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.lossy"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = lossy
-							datagen.path = 4
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "Uniform[100000]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.countmin.pareto"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = countmin
-							datagen.path = 4/pareto
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "TruncIntPareto[1,50]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>
-				<bean parent="operator.stats.processing">
-					<constructor-arg name="name" value="4GB.stats.lossy.pareto"/>
-					<constructor-arg name="config">
-						<value>
-							operator.stats.algorithm = lossy
-							datagen.path = 4/pareto
-							datagen.tuples.per.task = 15625000
-							system.default.config.parallelism.total = 64
-							datagen.distribution = "TruncIntPareto[1,50]"
-							system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-						</value>
-					</constructor-arg>
-				</bean>-->
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <!-- 20 nodes -->
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.none"/>
+                    <constructor-arg name="name" value="none.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = none
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
-                            system.spark.config.slaves = ["cloud-7", "cloud-8", "cloud-9", "cloud-10"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.counter"/>
+                    <constructor-arg name="name" value="counter.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = counter
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.minmax"/>
+                    <constructor-arg name="name" value="minmax.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = minmax
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.hyperloglog"/>
+                    <constructor-arg name="name" value="hyperloglog.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = hyperloglog
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.linearc"/>
+                    <constructor-arg name="name" value="linearc.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = linearc
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.countmin"/>
+                    <constructor-arg name="name" value="countmin.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = countmin
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="10GB.stats.lossy"/>
+                    <constructor-arg name="name" value="lossy.20"/>
                     <constructor-arg name="config">
                         <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
                             operator.stats.algorithm = lossy
-                            datagen.path = 10
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 32
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                            system.default.config.slaves = ["cloud-8", "cloud-9"]
+                            # datagen parameters
+                            datagen.path = 8B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
-                <!--				<bean parent="operator.stats.processing">
-                                    <constructor-arg name="name" value="10GB.stats.countmin.pareto"/>
-                                    <constructor-arg name="config">
-                                        <value>
-                                            operator.stats.algorithm = countmin
-                                            datagen.path = 10/pareto
-                                            datagen.tuples.per.task = 78125000
-                                            system.default.config.parallelism.total = 32
-                                            datagen.distribution = "TruncIntPareto[1,50]"
-                                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                                            system.default.config.slaves = ["cloud-8", "cloud-9"]
-                                        </value>
-                                    </constructor-arg>
-                                </bean>
-                                <bean parent="operator.stats.processing">
-                                    <constructor-arg name="name" value="10GB.stats.lossy.pareto"/>
-                                    <constructor-arg name="config">
-                                        <value>
-                                            operator.stats.algorithm = lossy
-                                            datagen.path = 10/pareto
-                                            datagen.tuples.per.task = 78125000
-                                            system.default.config.parallelism.total = 32
-                                            datagen.distribution = "TruncIntPareto[1,50]"
-                                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                                            system.default.config.slaves = ["cloud-8", "cloud-9"]
-                                        </value>
-                                    </constructor-arg>
-                                </bean>-->
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.none"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = none
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.counter"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = counter
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.minmax"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = minmax
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.hyperloglog"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = hyperloglog
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.linearc"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = linearc
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.countmin"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = countmin
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <bean parent="operator.stats.processing">
-                    <constructor-arg name="name" value="20GB.stats.lossy"/>
-                    <constructor-arg name="config">
-                        <value>
-                            operator.stats.algorithm = lossy
-                            datagen.path = 20
-                            datagen.tuples.per.task = 78125000
-                            system.default.config.parallelism.total = 64
-                            datagen.distribution = "Uniform[100000]"
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                        </value>
-                    </constructor-arg>
-                </bean>
-                <!--
-                                <bean parent="operator.stats.processing">
-                                    <constructor-arg name="name" value="20GB.stats.countmin.pareto"/>
-                                    <constructor-arg name="config">
-                                        <value>
-                                            operator.stats.algorithm = countmin
-                                            datagen.path = 20/pareto
-                                            datagen.tuples.per.task = 78125000
-                                            system.default.config.parallelism.total = 64
-                                            datagen.distribution = "TruncIntPareto[1,50]"
-                                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                                        </value>
-                                    </constructor-arg>
-                                </bean>
-                                <bean parent="operator.stats.processing">
-                                    <constructor-arg name="name" value="20GB.stats.lossy.pareto"/>
-                                    <constructor-arg name="config">
-                                        <value>
-                                            operator.stats.algorithm = lossy
-                                            datagen.path = 20/pareto
-                                            datagen.tuples.per.task = 78125000
-                                            system.default.config.parallelism.total = 64
-                                            datagen.distribution = "TruncIntPareto[1,50]"
-                                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
-                                        </value>
-                                    </constructor-arg>
-                                </bean>-->
-            </list>
-        </constructor-arg>
-    </bean>
 
-    <bean id="find.heavy.hitters" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
-        <constructor-arg name="experiments">
-            <list>
-                <bean parent="heavy.hitters.experiment">
-                    <constructor-arg name="name" value="2GB.heavyHitter"/>
+                <!-- 10 nodes -->
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="none.10"/>
                     <constructor-arg name="config">
                         <value>
-                            datagen.path = 2/pareto
-                            operator.stats.cardinality = 500000000
-                            system.default.config.parallelism.total = 64
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = none
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="heavy.hitters.experiment">
-                    <constructor-arg name="name" value="4GB.heavyHitter"/>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="counter.10"/>
                     <constructor-arg name="config">
                         <value>
-                            datagen.path = 4/pareto
-                            operator.stats.cardinality = 1000000000
-                            system.default.config.parallelism.total = 64
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = counter
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="heavy.hitters.experiment">
-                    <constructor-arg name="name" value="10GB.heavyHitter"/>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="minmax.10"/>
                     <constructor-arg name="config">
                         <value>
-                            datagen.path = 10/pareto
-                            operator.stats.cardinality = 2500000000
-                            system.default.config.parallelism.total = 64
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = minmax
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="heavy.hitters.experiment">
-                    <constructor-arg name="name" value="20GB.heavyHitter"/>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="hyperloglog.10"/>
                     <constructor-arg name="config">
                         <value>
-                            datagen.path = 20/pareto
-                            operator.stats.cardinality = 5000000000
-                            system.default.config.parallelism.total = 64
-                            system.flink.config.yaml.parallelism.default = ${system.default.config.parallelism.total}
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="linearc.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="countmin.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="lossy.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            # datagen parameters
+                            datagen.path = 4B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+
+                <!-- 05 nodes -->
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="none.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = none
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="counter.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = counter
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="minmax.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = minmax
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="hyperloglog.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="linearc.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="countmin.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="lossy.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            # datagen parameters
+                            datagen.path = 2B
+                            datagen.tuples.per.task = 50000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
                 </bean>

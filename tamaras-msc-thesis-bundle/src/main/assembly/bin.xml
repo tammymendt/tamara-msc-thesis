@@ -22,6 +22,7 @@
             <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
             <excludes>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-flink-datagens</exclude>
                 <exclude>eu.stratosphere:tamaras-msc-thesis-spark-datagens</exclude>
                 <exclude>eu.stratosphere:tamaras-msc-thesis-spark-jobs</exclude>
                 <exclude>eu.stratosphere:tamaras-msc-thesis-flink-jobs</exclude>
@@ -38,6 +39,7 @@
             <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
             <includes>
+                <include>eu.stratosphere:tamaras-msc-thesis-flink-datagens</include>
                 <include>eu.stratosphere:tamaras-msc-thesis-spark-datagens</include>
             </includes>
         </dependencySet>

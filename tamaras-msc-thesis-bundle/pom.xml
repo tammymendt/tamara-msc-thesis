@@ -20,15 +20,19 @@
         <!-- bundle jars -->
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>tamaras-msc-thesis-flink-datagens</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>tamaras-msc-thesis-spark-datagens</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>tamaras-msc-thesis-spark-jobs</artifactId>
+            <artifactId>tamaras-msc-thesis-flink-jobs</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>tamaras-msc-thesis-flink-jobs</artifactId>
+            <artifactId>tamaras-msc-thesis-spark-jobs</artifactId>
         </dependency>
 
         <!-- Peel -->
