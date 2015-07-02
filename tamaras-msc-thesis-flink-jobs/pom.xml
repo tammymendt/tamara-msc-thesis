@@ -63,7 +63,17 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-contrib</artifactId>
             <version>${flink.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.flink</groupId>
+                    <artifactId>flink-streaming-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.flink</groupId>
+                    <artifactId>flink-test-utils</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
