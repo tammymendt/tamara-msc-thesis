@@ -776,7 +776,7 @@
     <bean id="processing.scale-fraction.40B.uniform.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
-                <!--Fraction to error ratio = 2:1 -->
+                <!-- Fraction to error ratio = 2:1 -->
                 <!-- Fraction = .05 -->
                 <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="lossy.fraction.05.error.025"/>
@@ -888,7 +888,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <!--Fraction to error ratio = 10:1-->
+                <!-- Fraction to error ratio = 10:1 -->
                 <!-- Fraction = .05 -->
                 <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="lossy.fraction.05.error.005"/>
