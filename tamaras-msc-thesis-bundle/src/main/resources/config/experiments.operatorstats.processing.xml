@@ -73,8 +73,8 @@
     * Experiments
     *************************************************************************-->
 
-    <!-- processing scale-out experiment (on 5, 10, and 20 nodes) with 400 million elements per node & uniform distribution -->
-    <bean id="processing.scale-out.400M.uniform" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <!-- processing scale-out experiment (on 5, 10, and 20 nodes) with 2 billion elements per node & uniform distribution -->
+    <bean id="processing.scale-out.2B.uniform" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->
@@ -88,8 +88,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -104,8 +104,8 @@
                             # experiment parameters
                             operator.stats.algorithm = counter
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -120,8 +120,8 @@
                             # experiment parameters
                             operator.stats.algorithm = minmax
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -136,8 +136,8 @@
                             # experiment parameters
                             operator.stats.algorithm = hyperloglog
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -152,8 +152,8 @@
                             # experiment parameters
                             operator.stats.algorithm = linearc
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -168,8 +168,8 @@
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -184,8 +184,8 @@
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -202,8 +202,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -218,8 +218,8 @@
                             # experiment parameters
                             operator.stats.algorithm = counter
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -234,8 +234,8 @@
                             # experiment parameters
                             operator.stats.algorithm = minmax
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -250,8 +250,8 @@
                             # experiment parameters
                             operator.stats.algorithm = hyperloglog
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -266,8 +266,8 @@
                             # experiment parameters
                             operator.stats.algorithm = linearc
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -282,8 +282,8 @@
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -298,8 +298,8 @@
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -316,8 +316,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -332,8 +332,8 @@
                             # experiment parameters
                             operator.stats.algorithm = counter
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -348,8 +348,8 @@
                             # experiment parameters
                             operator.stats.algorithm = minmax
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -364,8 +364,8 @@
                             # experiment parameters
                             operator.stats.algorithm = hyperloglog
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -380,8 +380,8 @@
                             # experiment parameters
                             operator.stats.algorithm = linearc
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -396,8 +396,8 @@
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -412,8 +412,8 @@
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
@@ -422,8 +422,8 @@
         </constructor-arg>
     </bean>
 
-    <!-- processing scale-out experiment (on 5, 10, and 20 nodes) with 400 million elements per node & skewed distribution -->
-    <bean id="processing.scale-out.400M.pareto" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <!-- processing scale-out experiment (on 5, 10, and 20 nodes) with 2 billion elements per node & skewed distribution -->
+    <bean id="processing.scale-out.2B.pareto" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->
@@ -437,8 +437,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -453,8 +453,8 @@
                             # experiment parameters
                             operator.stats.algorithm = counter
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -469,8 +469,8 @@
                             # experiment parameters
                             operator.stats.algorithm = minmax
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -485,8 +485,8 @@
                             # experiment parameters
                             operator.stats.algorithm = hyperloglog
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -501,8 +501,8 @@
                             # experiment parameters
                             operator.stats.algorithm = linearc
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -517,8 +517,8 @@
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -533,8 +533,8 @@
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             # datagen parameters
-                            datagen.path = 8B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -551,8 +551,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -567,8 +567,8 @@
                             # experiment parameters
                             operator.stats.algorithm = counter
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -583,8 +583,8 @@
                             # experiment parameters
                             operator.stats.algorithm = minmax
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -599,8 +599,8 @@
                             # experiment parameters
                             operator.stats.algorithm = hyperloglog
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -615,8 +615,8 @@
                             # experiment parameters
                             operator.stats.algorithm = linearc
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -631,8 +631,8 @@
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -647,8 +647,8 @@
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             # datagen parameters
-                            datagen.path = 4B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -665,8 +665,8 @@
                             # experiment parameters
                             operator.stats.algorithm = none
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -681,8 +681,8 @@
                             # experiment parameters
                             operator.stats.algorithm = counter
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -697,8 +697,8 @@
                             # experiment parameters
                             operator.stats.algorithm = minmax
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -713,8 +713,8 @@
                             # experiment parameters
                             operator.stats.algorithm = hyperloglog
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -729,8 +729,8 @@
                             # experiment parameters
                             operator.stats.algorithm = linearc
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -745,8 +745,8 @@
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
@@ -761,8 +761,8 @@
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             # datagen parameters
-                            datagen.path = 2B
-                            datagen.tuples.per.task = 50000000
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
                     </constructor-arg>
