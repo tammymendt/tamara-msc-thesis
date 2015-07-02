@@ -134,6 +134,7 @@
                     <version>${scala.version}</version>
                     <scope>compile</scope>
                 </dependency>
+
                 <!-- Flink -->
                 <dependency>
                     <groupId>org.apache.flink</groupId>
