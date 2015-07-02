@@ -8,7 +8,7 @@
     *************************************************************************-->
 
     <bean id="datagen.flink.int" class="eu.stratosphere.peel.extensions.flink.beans.job.FlinkJob">
-        <constructor-arg name="runner" ref="flink-0.9.0"/>
+        <constructor-arg name="runner" ref="flink-0.9-FLINK-1297"/>
         <constructor-arg name="command">
             <value>--class eu.stratosphere.procrustes.datagen.flink.FlinkIntGenerator ${app.path.datagens}/tamaras-msc-thesis-flink-datagens-1.0-SNAPSHOT.jar ${system.default.config.parallelism.total} ${datagen.tuples.per.task} ${datagen.distribution} ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
         </constructor-arg>
