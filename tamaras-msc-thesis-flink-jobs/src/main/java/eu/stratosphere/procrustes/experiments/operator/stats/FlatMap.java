@@ -31,9 +31,9 @@ public class FlatMap {
     public static void main(String[] args) throws Exception {
 
         if (!parseParameters(args)) {
-            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [-log2m|-bitmap|-error|-fraction <algorithm params>]");
+            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <algorithm params>]");
             LOG.error("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc");
-            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [-log2m|-bitmap|-error|-fraction <algorithm params>]");
+            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <algorithm params>]");
             System.out.println("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc");
             return;
         }
@@ -170,22 +170,22 @@ public class FlatMap {
                 return false;
             }
             if (args.length >= 4) {
-                if (args[2].equals("-log2m")) {
+                if (args[2].equals("--log2m")) {
                     log2m = Integer.parseInt(args[3]);
-                } else if (args[2].equals("-bitmap")) {
+                } else if (args[2].equals("--bitmap")) {
                     bitmap = Integer.parseInt(args[3]);
-                } else if (args[2].equals("-fraction")) {
+                } else if (args[2].equals("--fraction")) {
                     fraction = Double.parseDouble(args[3]);
-                } else if (args[2].equals("-error")) {
+                } else if (args[2].equals("--error")) {
                     error = Double.parseDouble(args[3]);
                 } else {
                     return false;
                 }
             }
             if (args.length >= 6) {
-                if (args[4].equals("-fraction")) {
+                if (args[4].equals("--fraction")) {
                     fraction = Double.parseDouble(args[5]);
-                } else if (args[4].equals("-error")) {
+                } else if (args[4].equals("--error")) {
                     error = Double.parseDouble(args[5]);
                 } else {
                     return false;

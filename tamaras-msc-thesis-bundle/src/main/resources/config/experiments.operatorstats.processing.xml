@@ -57,7 +57,7 @@
 
     <bean id="operator.stats.processing.with.algorithm.params" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
         <constructor-arg name="command">
-            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} -fraction ${operator.stats.fraction} -error ${operator.stats.error}</value>
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} --fraction ${operator.stats.fraction} --error ${operator.stats.error}</value>
         </constructor-arg>
         <constructor-arg name="input">
             <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
