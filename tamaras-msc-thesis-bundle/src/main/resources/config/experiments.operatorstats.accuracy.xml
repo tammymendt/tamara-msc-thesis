@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--************************************************************************
+    * Experiments
+    *************************************************************************-->
+    <bean id="heavy.hitter.accuracy" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
+        <constructor-arg name="command">
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitter ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} ${operator.stats.cardinality} -fraction ${operator.stats.fraction} -error ${operator.stats.error}</value>
+        </constructor-arg>
+        <constructor-arg name="input">
+            <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
+                <ref bean="dataset.int"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="output">
+            <ref bean="experiment.output.hdfs.operator.stats"/>
+        </constructor-arg>
+    </bean>
+
+    <!--************************************************************************
+     * Experiments Runs
+    *************************************************************************-->
+
+    <!-- accuracy scale-out experiment (on 5, 10, and 20 nodes) with 2 billion elements per node & pareto distribution -->
+    <!--Fix the fraction and error-->
+    <bean id="accuracy.scale-out.2B.pareto" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <!-- 20 nodes -->
+                <bean parent="heavy.hitter.accuracy">
+                    <constructor-arg name="name" value="lossy.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction =
+                            operator.stats.error =
+                            operator.stats.cardinality = 4000000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="heavy.hitter.accuracy">
+                    <constructor-arg name="name" value="countmin.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction =
+                            operator.stats.error =
+                            operator.stats.cardinality = 4000000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!-- 10 nodes -->
+                <bean parent="heavy.hitter.accuracy">
+                    <constructor-arg name="name" value="lossy.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction =
+                            operator.stats.error =
+                            operator.stats.cardinality = 2000000000
+                            # datagen parameters
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="heavy.hitter.accuracy">
+                    <constructor-arg name="name" value="countmin.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction =
+                            operator.stats.error =
+                            operator.stats.cardinality = 2000000000
+                            # datagen parameters
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!-- 5 nodes -->
+                <bean parent="heavy.hitter.accuracy">
+                    <constructor-arg name="name" value="lossy.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction =
+                            operator.stats.error =
+                            operator.stats.cardinality = 1000000000
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="heavy.hitter.accuracy">
+                    <constructor-arg name="name" value="countmin.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction =
+                            operator.stats.error =
+                            operator.stats.cardinality = 1000000000
+                            # datagen parameters
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+</beans>
