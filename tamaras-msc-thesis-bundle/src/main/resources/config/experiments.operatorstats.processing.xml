@@ -55,6 +55,20 @@
         </constructor-arg>
     </bean>
 
+    <bean id="operator.stats.processing.with.algorithm.params" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
+        <constructor-arg name="command">
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} -fraction ${operator.stats.fraction} -error ${operator.stats.error}</value>
+        </constructor-arg>
+        <constructor-arg name="input">
+            <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
+                <ref bean="dataset.int"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="output">
+            <ref bean="experiment.output.hdfs.operator.stats"/>
+        </constructor-arg>
+    </bean>
+
     <bean id="heavy.hitters.experiment" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
         <constructor-arg name="command">
             <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitterNoAccumulator ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.cardinality}</value>
@@ -764,6 +778,126 @@
                             datagen.path = 10B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- processing scale-fraction-error experiment (on 5 nodes) with 2 billion elements per node & uniform distribution-->
+    <!-- error is fixed at fraction/2 -->
+    <bean id="processing.scale-fraction.2B.uniform" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <!-- Fraction = .05 -->
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="lossy.05.fraction.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction = 0.05
+                            operator.stats.error = 0.025
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="countmin.05.fraction.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction = 0.05
+                            operator.stats.error = 0.025
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!-- Fraction = .005 -->
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="lossy.05.fraction.005"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="countmin.05.fraction.005"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!-- Fraction = .001 -->
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="lossy.05.fraction.001"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="countmin.05.fraction.001"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
                 </bean>
