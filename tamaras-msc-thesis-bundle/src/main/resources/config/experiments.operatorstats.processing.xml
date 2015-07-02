@@ -773,41 +773,42 @@
 
     <!-- processing scale-fraction-error experiment (on 5 nodes) with 2 billion elements per node & uniform distribution-->
     <!-- error is fixed at fraction/2 -->
-    <bean id="processing.scale-fraction.2B.uniform" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <bean id="processing.scale-fraction.40B.uniform.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <!--Fraction to error ratio = 2:1 -->
                 <!-- Fraction = .05 -->
                 <bean parent="operator.stats.processing.with.algorithm.params">
-                    <constructor-arg name="name" value="lossy.05.fraction.05"/>
+                    <constructor-arg name="name" value="lossy.fraction.05.error.025"/>
                     <constructor-arg name="config">
                         <value>
                             # common system parameters
-                            system.default.config.parallelism.total = 40
-                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             operator.stats.fraction = 0.05
                             operator.stats.error = 0.025
                             # datagen parameters
-                            datagen.path = 10B
+                            datagen.path = 40B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing.with.algorithm.params">
-                    <constructor-arg name="name" value="countmin.05.fraction.05"/>
+                    <constructor-arg name="name" value="countmin.fraction.05.error.025"/>
                     <constructor-arg name="config">
                         <value>
                             # common system parameters
-                            system.default.config.parallelism.total = 40
-                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             operator.stats.fraction = 0.05
                             operator.stats.error = 0.025
                             # datagen parameters
-                            datagen.path = 10B
+                            datagen.path = 40B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
@@ -815,36 +816,36 @@
                 </bean>
                 <!-- Fraction = .005 -->
                 <bean parent="operator.stats.processing.with.algorithm.params">
-                    <constructor-arg name="name" value="lossy.05.fraction.005"/>
+                    <constructor-arg name="name" value="lossy.fraction.005.error.0025"/>
                     <constructor-arg name="config">
                         <value>
                             # common system parameters
-                            system.default.config.parallelism.total = 40
-                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             operator.stats.fraction = 0.005
                             operator.stats.error = 0.0025
                             # datagen parameters
-                            datagen.path = 10B
+                            datagen.path = 40B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing.with.algorithm.params">
-                    <constructor-arg name="name" value="countmin.05.fraction.005"/>
+                    <constructor-arg name="name" value="countmin.fraction.005.error.0025"/>
                     <constructor-arg name="config">
                         <value>
                             # common system parameters
-                            system.default.config.parallelism.total = 40
-                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             operator.stats.fraction = 0.005
                             operator.stats.error = 0.0025
                             # datagen parameters
-                            datagen.path = 10B
+                            datagen.path = 40B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
@@ -852,36 +853,148 @@
                 </bean>
                 <!-- Fraction = .001 -->
                 <bean parent="operator.stats.processing.with.algorithm.params">
-                    <constructor-arg name="name" value="lossy.05.fraction.001"/>
+                    <constructor-arg name="name" value="lossy.fraction.001.error.0005"/>
                     <constructor-arg name="config">
                         <value>
                             # common system parameters
-                            system.default.config.parallelism.total = 40
-                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = lossy
                             operator.stats.fraction = 0.001
                             operator.stats.error = 0.0005
                             # datagen parameters
-                            datagen.path = 10B
+                            datagen.path = 40B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
                 </bean>
                 <bean parent="operator.stats.processing.with.algorithm.params">
-                    <constructor-arg name="name" value="countmin.05.fraction.001"/>
+                    <constructor-arg name="name" value="countmin.fraction.001.error.0005"/>
                     <constructor-arg name="config">
                         <value>
                             # common system parameters
-                            system.default.config.parallelism.total = 40
-                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = countmin
                             operator.stats.fraction = 0.001
                             operator.stats.error = 0.0005
                             # datagen parameters
-                            datagen.path = 10B
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!--Fraction to error ratio = 10:1-->
+                <!-- Fraction = .05 -->
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="lossy.fraction.05.error.005"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction = 0.05
+                            operator.stats.error = 0.005
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="countmin.fraction.05.error.005"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction = 0.05
+                            operator.stats.error = 0.005
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!-- Fraction = .005 -->
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="lossy.fraction.005.error.0005"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0005
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="countmin.fraction.005.error.0005"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0005
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <!-- Fraction = .001 -->
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="lossy.fraction.001.error.0001"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = lossy
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
+                    <constructor-arg name="name" value="countmin.fraction.001.error.0001"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = countmin
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            # datagen parameters
+                            datagen.path = 40B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "Uniform[100000]"
                         </value>

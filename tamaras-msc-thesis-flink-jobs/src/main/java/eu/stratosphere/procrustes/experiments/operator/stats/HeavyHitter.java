@@ -55,14 +55,6 @@ public class HeavyHitter {
         LOG.info("\nGlobal Stats: " + globalStats.toString());
         System.out.println("\nGlobal Stats: " + globalStats.toString());
 
-        LOG.info("\nReal Frequencies for detected heavy hitters: ");
-        System.out.println("\nReal Frequencies for detected heavy hitters: ");
-        collection = elementFrequencies.filter(new HeavyHitters(globalStats.getHeavyHitters())).collect();
-        for (Object tuple : collection) {
-            LOG.info(tuple.toString());
-            System.out.println(tuple.toString());
-        }
-
     }
 
     // *************************************************************************
