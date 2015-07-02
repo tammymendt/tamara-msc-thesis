@@ -16,4 +16,4 @@ fi
 # execute rsync
 echo ""
 echo "Fetching only log files from remote host."
-rsync -a -v -r -e "ssh -l ${host_user}" --include="log-*" --include="log-*/**" --exclude="*" ${host_name}:${host_dest}/. $src/
+rsync -a -v -r -e "ssh -l ${host_user}" --include="results" --include="results/**.tar.gz" --exclude="*" ${host_name}:${host_dest}/. $src/
