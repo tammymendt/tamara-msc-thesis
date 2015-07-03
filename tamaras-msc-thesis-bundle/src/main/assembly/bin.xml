@@ -61,6 +61,15 @@
     </dependencySets>
 
     <fileSets>
+        <!-- copy bin files -->
+        <fileSet>
+            <directory>src/main/resources/bin</directory>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
         <!-- create an empty config directory -->
         <fileSet>
             <directory>src/main/resources/config</directory>
@@ -106,7 +115,7 @@
                 <exclude>**/*</exclude>
             </excludes>
         </fileSet>
-        <!-- create an empty util directory -->
+        <!-- create util directory -->
         <fileSet>
             <directory>src/main/resources/util</directory>
             <outputDirectory>util</outputDirectory>
@@ -115,32 +124,18 @@
                 <exclude>**/*.sh</exclude>
             </excludes>
         </fileSet>
+        <!-- copy util bash files -->
+        <fileSet>
+            <directory>src/main/resources/util/sync</directory>
+            <outputDirectory>util/sync</outputDirectory>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <files>
-        <!-- copy bash file -->
-        <file>
-            <source>src/main/resources/bin/peel.sh</source>
-            <destName>peel.sh</destName>
-            <fileMode>0755</fileMode>
-        </file>
-        <!-- copy util bash files -->
-        <file>
-            <source>src/main/resources/util/sync/fetch_all.sh</source>
-            <destName>util/sync/fetch_all.sh</destName>
-            <fileMode>0755</fileMode>
-        </file>
-        <file>
-            <source>src/main/resources/util/sync/fetch_log.sh</source>
-            <destName>util/sync/fetch_log.sh</destName>
-            <fileMode>0755</fileMode>
-        </file>
-        <file>
-            <source>src/main/resources/util/sync/push_all.sh</source>
-            <destName>util/sync/push_all.sh</destName>
-            <fileMode>0755</fileMode>
-        </file>
-
         <!-- create a VERSION file to the project root -->
         <file>
             <source>src/main/resources/VERSION</source>
