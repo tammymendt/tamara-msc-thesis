@@ -2,6 +2,7 @@ package eu.stratosphere.procrustes.experiments.operator.stats;
 
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.accumulators.Accumulator;
+import org.apache.flink.api.common.accumulators.Histogram;
 import org.apache.flink.api.common.accumulators.IntCounter;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -19,14 +20,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.TreeMap;
 
 public class FlatMap {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Processing.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FlatMap.class);
 
     private static final String ACCUMULATOR_NAME = "op-stats";
 
-    private static final String[] ALGORITHMS = {"none", "counter", "minmax", "lossy", "countmin", "hyperloglog", "linearc", "all"};
+    private static final String[] ALGORITHMS = {"none", "counter", "minmax", "lossy", "countmin", "hyperloglog", "linearc", "all", "histogram"};
 
     public static void main(String[] args) throws Exception {
 
@@ -44,6 +46,8 @@ public class FlatMap {
             env.readTextFile(inputPath).flatMap(new CountInt()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
         } else if (algorithm.equals("counter")) {
             env.readTextFile(inputPath).flatMap(new CountIntAccumulator()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
+        } else if (algorithm.equals("histogram")) {
+            env.readTextFile(inputPath).flatMap(new CountHistogramAccumulator()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
         } else {
             env.readTextFile(inputPath)
                .flatMap(new CountIntOpStatsAccumulator(configOperatorStatistics()))
@@ -60,6 +64,10 @@ public class FlatMap {
             int cardinality = result.getIntCounterResult(ACCUMULATOR_NAME);
             LOG.info("\nTotal Cardinality: " + cardinality);
             System.out.println("\nTotal Cardinality: " + cardinality);
+        } else if (algorithm.equals("histogram")) {
+            TreeMap<Integer, Integer> histogram = result.getAccumulatorResult(ACCUMULATOR_NAME);
+            LOG.info("\nHistogram Result: " + histogram.toString());
+            System.out.println("\nHistogram Result: " + histogram.toString());
         } else {
             OperatorStatistics globalStats = result.getAccumulatorResult(ACCUMULATOR_NAME);
             LOG.info("\nGlobal Stats: " + globalStats.toString());
@@ -79,6 +87,27 @@ public class FlatMap {
             int intValue;
             try {
                 intValue = Integer.parseInt(value);
+                out.collect(new Tuple2(intValue, 1));
+            } catch (NumberFormatException ex) {}
+        }
+    }
+
+    public static class CountHistogramAccumulator extends RichFlatMapFunction<String, Tuple2<Integer, Integer>> {
+
+        Histogram accumulator;
+
+        @Override
+        public void open(Configuration parameters) {
+
+            accumulator = getRuntimeContext().getHistogram(ACCUMULATOR_NAME);
+        }
+
+        @Override
+        public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
+            int intValue;
+            try {
+                intValue = Integer.parseInt(value);
+                accumulator.add(intValue);
                 out.collect(new Tuple2(intValue, 1));
             } catch (NumberFormatException ex) {}
         }

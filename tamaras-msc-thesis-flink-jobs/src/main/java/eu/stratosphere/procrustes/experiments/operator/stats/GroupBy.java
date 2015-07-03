@@ -19,7 +19,6 @@ import org.apache.flink.api.common.accumulators.Accumulator;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
-import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -37,9 +36,9 @@ import java.util.Arrays;
 /**
  * OperatorStatistics Experiments job
  */
-public class Processing {
+public class GroupBy {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Processing.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GroupBy.class);
 
     private static final String ACCUMULATOR_NAME = "op-stats";
 

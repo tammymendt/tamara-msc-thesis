@@ -18,13 +18,12 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class HeavyHitter {
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(Processing.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HeavyHitter.class);
 
     private static final String ACCUMULATOR_NAME = "op-stats";
 

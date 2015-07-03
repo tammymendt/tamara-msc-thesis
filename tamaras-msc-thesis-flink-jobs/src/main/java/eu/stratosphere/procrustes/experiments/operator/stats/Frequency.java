@@ -6,7 +6,6 @@ import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.contrib.operatorstatistics.OperatorStatistics;
@@ -19,12 +18,11 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class Frequency {
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(Processing.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Frequency.class);
 
     private static final String ACCUMULATOR_NAME = "op-stats";
 
