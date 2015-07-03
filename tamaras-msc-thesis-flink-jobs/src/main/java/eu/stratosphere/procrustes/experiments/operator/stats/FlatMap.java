@@ -31,10 +31,10 @@ public class FlatMap {
     public static void main(String[] args) throws Exception {
 
         if (!parseParameters(args)) {
-            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <algorithm params>]");
-            LOG.error("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc");
-            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <algorithm params>]");
-            System.out.println("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc");
+            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <param value>]");
+            LOG.error("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc, counter, all");
+            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <param value>]");
+            System.out.println("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc, counter, all");
             return;
         }
 

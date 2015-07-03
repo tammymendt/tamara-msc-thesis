@@ -27,7 +27,7 @@
 
     <!-- accuracy scale-out experiment (on 5, 10, and 20 nodes) with 2 billion elements per node & pareto distribution -->
     <!--Fix the fraction and error-->
-    <bean id="accuracy.scale-out.2B.pareto" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <bean id="accuracy.scale-out.2B.pareto.fraction.005.error.0005" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->

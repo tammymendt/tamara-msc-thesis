@@ -12,6 +12,6 @@
     <!-- operatorstats processing experiment beans -->
     <import resource="experiments.operatorstats.processing.xml"/>
     <!-- operatorstats accuracy experiment beans -->
-    <!--<import resource="experiments.operatorstats.accuracy.xml"/>-->
+    <import resource="experiments.operatorstats.accuracy.xml"/>
 
 </beans>
