@@ -26,8 +26,8 @@
     *************************************************************************-->
 
     <!-- accuracy scale-out experiment (on 5, 10, and 20 nodes) with 2 billion elements per node & pareto distribution -->
-    <!--Fix the fraction and error-->
-    <bean id="accuracy.scale-out.2B.pareto.fraction.005.error.0005" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+    <!--Fix the fraction to 0.001 and error to 0.0005-->
+    <bean id="accuracy.scale-out.2B.pareto.fraction.001.error.0005" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->
@@ -40,8 +40,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = lossy
-                            operator.stats.fraction =
-                            operator.stats.error =
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
                             operator.stats.cardinality = 4000000000
                             # datagen parameters
                             datagen.path = 40B
@@ -59,8 +59,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = countmin
-                            operator.stats.fraction =
-                            operator.stats.error =
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
                             operator.stats.cardinality = 4000000000
                             # datagen parameters
                             datagen.path = 40B
@@ -79,8 +79,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only10}
                             # experiment parameters
                             operator.stats.algorithm = lossy
-                            operator.stats.fraction =
-                            operator.stats.error =
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
                             operator.stats.cardinality = 2000000000
                             # datagen parameters
                             datagen.path = 20B
@@ -98,8 +98,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only10}
                             # experiment parameters
                             operator.stats.algorithm = countmin
-                            operator.stats.fraction =
-                            operator.stats.error =
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
                             operator.stats.cardinality = 2000000000
                             # datagen parameters
                             datagen.path = 20B
@@ -118,8 +118,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only05}
                             # experiment parameters
                             operator.stats.algorithm = lossy
-                            operator.stats.fraction =
-                            operator.stats.error =
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
                             operator.stats.cardinality = 1000000000
                             # datagen parameters
                             datagen.path = 10B
@@ -137,8 +137,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only05}
                             # experiment parameters
                             operator.stats.algorithm = countmin
-                            operator.stats.fraction =
-                            operator.stats.error =
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0005
                             operator.stats.cardinality = 1000000000
                             # datagen parameters
                             datagen.path = 20B
