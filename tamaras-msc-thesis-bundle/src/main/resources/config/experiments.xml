@@ -7,11 +7,9 @@
     <import resource="systems.xml"/>
     <!-- base experiment beans -->
     <import resource="experiments.base.xml"/>
-    <!-- wordcount experiment beans -->
-    <import resource="experiments.wordcount.xml"/>
     <!-- operatorstats processing experiment beans -->
     <import resource="experiments.operatorstats.processing.xml"/>
     <!-- operatorstats accuracy experiment beans -->
-<!--    <import resource="experiments.operatorstats.accuracy.xml"/>-->
+    <import resource="experiments.operatorstats.accuracy.xml"/>
 
 </beans>
