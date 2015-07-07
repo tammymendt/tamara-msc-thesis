@@ -2,7 +2,7 @@ package eu.stratosphere.procrustes.experiments.operator.stats;
 
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.accumulators.Accumulator;
-import org.apache.flink.api.common.functions.FilterFunction;
+import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -14,11 +14,11 @@ import org.apache.flink.contrib.operatorstatistics.OperatorStatisticsConfig;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scala.Tuple3;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 
 public class HeavyHitter {
 
@@ -39,10 +39,11 @@ public class HeavyHitter {
 
         DataSet<Tuple2<Integer, Integer>> elementFrequencies =
                 env.readTextFile(inputPath).flatMap(new CountInt(configOperatorStatistics())).groupBy(0).sum(1);
-        Collection collection = elementFrequencies.filter(new CountGreaterThan(minFrequency)).collect();
+//        Collection collection = elementFrequencies.filter(new CountGreaterThan(minFrequency)).collect();
+        Collection collection = elementFrequencies.flatMap(new CheckFrequency(frequencyLowerBound,frequency)).collect();
 
-        LOG.info("\nActual heavy hitters: (min frequency -> " + minFrequency + ")");
-        System.out.println("\nActual heavy hitters: (min frequency -> " + minFrequency + ")");
+        LOG.info("\nActual heavy hitters: (min frequency -> " + frequencyLowerBound + ", frequency -> "+frequency+")");
+        System.out.println("\nActual heavy hitters: (min frequency -> " + frequencyLowerBound + ", fyequency -> "+frequency+")");
         for (Object tuple : collection) {
             LOG.info(tuple.toString());
             System.out.println(tuple.toString());
@@ -107,21 +108,27 @@ public class HeavyHitter {
         }
     }
 
-    public static class HeavyHitters implements FilterFunction<Tuple2<Integer, Integer>> {
+    public static class CheckFrequency implements FlatMapFunction<Tuple2<Integer, Integer>, Tuple3<Integer,Integer,String>> {
 
-        private Map<Object, Long> hitters;
+        long frequencyLowerBound = 0;
+        long frequency = 0;
 
-        public HeavyHitters(Map hitters) {
-            this.hitters = hitters;
+        public CheckFrequency(long frequencyLowerBound,long frequency) {
+            this.frequencyLowerBound = frequencyLowerBound;
+            this.frequency = frequency;
         }
 
         @Override
-        public boolean filter(Tuple2<Integer, Integer> tuple) {
-            return hitters.containsKey(tuple.f0);
+        public void flatMap(Tuple2<Integer, Integer> value, Collector<Tuple3<Integer, Integer, String>> out) throws Exception {
+            if (value.f1>=frequency){
+                out.collect(new Tuple3<Integer, Integer, String>(value.f0,value.f1,"True Frequent"));
+            }else if (value.f1>=frequencyLowerBound){
+                out.collect(new Tuple3<Integer, Integer, String>(value.f0,value.f1,"Above min frequency threshold"));
+            }
         }
     }
 
-    public static class CountGreaterThan implements FilterFunction<Tuple2<Integer, Integer>> {
+/*    public static class CountGreaterThan implements FilterFunction<Tuple2<Integer, Integer>> {
 
         long boundary = 0;
 
@@ -133,7 +140,7 @@ public class HeavyHitter {
         public boolean filter(Tuple2<Integer, Integer> tuple) {
             return tuple.f1 > boundary;
         }
-    }
+    }*/
 
     // *************************************************************************
     // UTIL METHODS
@@ -149,7 +156,8 @@ public class HeavyHitter {
 
     private static double error = 0.0001;
 
-    public static long minFrequency;
+    public static long frequencyLowerBound;
+    public static long frequency;
 
     private static boolean parseParameters(String[] args) {
 
@@ -165,16 +173,16 @@ public class HeavyHitter {
             cardinality = Long.parseLong(args[2]);
 
             if (args.length >= 5) {
-                if (args[3].equals("-fraction")) {
+                if (args[3].equals("--fraction")) {
                     fraction = Double.parseDouble(args[4]);
-                } else if (args[3].equals("-error")) {
+                } else if (args[3].equals("--error")) {
                     error = Double.parseDouble(args[4]);
                 }
             }
             if (args.length >= 7) {
-                if (args[3].equals("-fraction")) {
+                if (args[3].equals("--fraction")) {
                     fraction = Double.parseDouble(args[4]);
-                } else if (args[3].equals("-error")) {
+                } else if (args[3].equals("--error")) {
                     error = Double.parseDouble(args[4]);
                 }
             }
@@ -189,7 +197,8 @@ public class HeavyHitter {
                 System.out.println("Fraction must be larger than error.");
                 return false;
             }
-            minFrequency = Math.round(cardinality * (fraction - error));
+            frequencyLowerBound = Math.round(cardinality * (fraction - error));
+            frequency = Math.round(cardinality * fraction);
             return true;
 
         } else {

@@ -28,6 +28,10 @@ public class CountDistinct {
     public static void main(String[] args) throws Exception {
 
         if (!parseParameters(args)) {
+            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--p <algorithm parameter>]");
+            LOG.error("Algorithm options: hyperloglog, linearc");
+            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--p <algorithm parameter>]");
+            System.out.println("Algorithm options: hyperloglog, linearc");
             return;
         }
 
@@ -116,7 +120,7 @@ public class CountDistinct {
                 return false;
             }
             if (args.length == 4) {
-                if (args[2].equals("-p")) {
+                if (args[2].equals("--p")) {
                     algorithmParam = Integer.parseInt(args[3]);
                     return true;
                 }
@@ -124,10 +128,6 @@ public class CountDistinct {
             }
             return true;
         } else {
-            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [-p <algorithm parameter>]");
-            LOG.error("Algorithm options: hyperloglog, linearc");
-            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [-p <algorithm parameter>]");
-            System.out.println("Algorithm options: hyperloglog, linearc");
             return false;
         }
 
@@ -143,7 +143,7 @@ public class CountDistinct {
             if (algorithmParam != -1) {
                 opStatsConfig.setCountDlog2m(algorithmParam);
             } else {
-                opStatsConfig.setCountDlog2m(14);// Default log2m parameter
+                opStatsConfig.setCountDlog2m(10);// Default log2m parameter
             }
         } else if (algorithm.equals("linearc")) {
             opStatsConfig.collectCountDistinct = true;
@@ -151,7 +151,7 @@ public class CountDistinct {
             if (algorithmParam != -1) {
                 opStatsConfig.setCountDbitmap(algorithmParam);
             } else {
-                opStatsConfig.setCountDbitmap(10000000);// Default bitmapSize parameter
+                opStatsConfig.setCountDbitmap(100000000);// Default bitmapSize parameter
             }
         }
         return opStatsConfig;
