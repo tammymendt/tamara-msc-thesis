@@ -7,9 +7,9 @@
     <!--************************************************************************
     * Experiments
     *************************************************************************-->
-    <bean id="heavy.hitter.accuracy" parent="experiment.flink-0.9-FLINK-1297-run-1" abstract="true">
+    <bean id="heavy.hitters" parent="experiment.flink-0.9.0" abstract="true">
         <constructor-arg name="command">
-            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitter ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} ${operator.stats.cardinality} --fraction ${operator.stats.fraction} --error ${operator.stats.error}</value>
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitter ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} --cardinality ${operator.stats.cardinality} --fraction ${operator.stats.fraction} --error ${operator.stats.error}</value>
         </constructor-arg>
         <constructor-arg name="input">
             <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
@@ -21,9 +21,9 @@
         </constructor-arg>
     </bean>
 
-    <bean id="count.distinct.accuracy.default.param" parent="experiment.flink-0.9-FLINK-1297-run-1" abstract="true">
+    <bean id="count.distinct" parent="experiment.flink-0.9.0" abstract="true">
         <constructor-arg name="command">
-            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.CountDistinct ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm}</value>
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.CountDistinct ${app.path.jobs}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
         </constructor-arg>
         <constructor-arg name="input">
             <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
@@ -45,7 +45,25 @@
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->
-                <bean parent="heavy.hitter.accuracy">
+                <bean parent="heavy.hitters">
+                    <constructor-arg name="name" value="real.heavy.hitters.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
+                            operator.stats.cardinality = 40000000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="lossy.20"/>
                     <constructor-arg name="config">
                         <value>
@@ -54,9 +72,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = lossy
-                            operator.stats.fraction = 0.001
-                            operator.stats.error = 0.0005
-                            operator.stats.cardinality = 4000000000
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
                             # datagen parameters
                             datagen.path = 40B
                             datagen.tuples.per.task = 250000000
@@ -64,7 +81,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="heavy.hitter.accuracy">
+                <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="countmin.20"/>
                     <constructor-arg name="config">
                         <value>
@@ -73,9 +90,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only20}
                             # experiment parameters
                             operator.stats.algorithm = countmin
-                            operator.stats.fraction = 0.001
-                            operator.stats.error = 0.0005
-                            operator.stats.cardinality = 4000000000
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
                             # datagen parameters
                             datagen.path = 40B
                             datagen.tuples.per.task = 250000000
@@ -84,7 +100,25 @@
                     </constructor-arg>
                 </bean>
                 <!-- 10 nodes -->
-                <bean parent="heavy.hitter.accuracy">
+                <bean parent="heavy.hitters">
+                    <constructor-arg name="name" value="real.heavy.hitters.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
+                            operator.stats.cardinality = 20000000000
+                            # datagen parameters
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="lossy.10"/>
                     <constructor-arg name="config">
                         <value>
@@ -93,9 +127,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only10}
                             # experiment parameters
                             operator.stats.algorithm = lossy
-                            operator.stats.fraction = 0.001
-                            operator.stats.error = 0.0005
-                            operator.stats.cardinality = 2000000000
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
                             # datagen parameters
                             datagen.path = 20B
                             datagen.tuples.per.task = 250000000
@@ -103,7 +136,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="heavy.hitter.accuracy">
+                <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="countmin.10"/>
                     <constructor-arg name="config">
                         <value>
@@ -112,9 +145,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only10}
                             # experiment parameters
                             operator.stats.algorithm = countmin
-                            operator.stats.fraction = 0.001
-                            operator.stats.error = 0.0005
-                            operator.stats.cardinality = 2000000000
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
                             # datagen parameters
                             datagen.path = 20B
                             datagen.tuples.per.task = 250000000
@@ -123,7 +155,25 @@
                     </constructor-arg>
                 </bean>
                 <!-- 5 nodes -->
-                <bean parent="heavy.hitter.accuracy">
+                <bean parent="heavy.hitters">
+                    <constructor-arg name="name" value="real.heavy.hitters.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
+                            operator.stats.cardinality = 10000000000
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="lossy.05"/>
                     <constructor-arg name="config">
                         <value>
@@ -132,9 +182,8 @@
                             system.default.config.slaves = ${env.hosts.slaves.only05}
                             # experiment parameters
                             operator.stats.algorithm = lossy
-                            operator.stats.fraction = 0.001
-                            operator.stats.error = 0.0005
-                            operator.stats.cardinality = 1000000000
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
                             # datagen parameters
                             datagen.path = 10B
                             datagen.tuples.per.task = 250000000
@@ -142,7 +191,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="heavy.hitter.accuracy">
+                <bean parent="operator.stats.processing.with.algorithm.params">
                     <constructor-arg name="name" value="countmin.05"/>
                     <constructor-arg name="config">
                         <value>
@@ -151,11 +200,10 @@
                             system.default.config.slaves = ${env.hosts.slaves.only05}
                             # experiment parameters
                             operator.stats.algorithm = countmin
-                            operator.stats.fraction = 0.001
-                            operator.stats.error = 0.0005
-                            operator.stats.cardinality = 1000000000
+                            operator.stats.fraction = 0.005
+                            operator.stats.error = 0.0025
                             # datagen parameters
-                            datagen.path = 20B
+                            datagen.path = 10B
                             datagen.tuples.per.task = 250000000
                             datagen.distribution = "TruncIntPareto[1,100000]"
                         </value>
