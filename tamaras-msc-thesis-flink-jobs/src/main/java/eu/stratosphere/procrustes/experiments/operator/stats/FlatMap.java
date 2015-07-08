@@ -198,31 +198,35 @@ public class FlatMap {
             if (!Arrays.asList(ALGORITHMS).contains(algorithm)) {
                 return false;
             }
-            if (args.length >= 4) {
-                if (args[2].equals("--log2m")) {
-                    log2m = Integer.parseInt(args[3]);
-                } else if (args[2].equals("--bitmap")) {
-                    bitmap = Integer.parseInt(args[3]);
-                } else if (args[2].equals("--fraction")) {
-                    fraction = Double.parseDouble(args[3]);
-                } else if (args[2].equals("--error")) {
-                    error = Double.parseDouble(args[3]);
-                } else {
-                    return false;
-                }
-            }
-            if (args.length >= 6) {
-                if (args[4].equals("--fraction")) {
-                    fraction = Double.parseDouble(args[5]);
-                } else if (args[4].equals("--error")) {
-                    error = Double.parseDouble(args[5]);
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        } else {
+        }
+        if ((args.length >= 4) && !parseParameters(args[2],args[3])) {
             return false;
+        }
+        if ((args.length == 6) && !parseParameters(args[4],args[5])){
+            return false;
+        }
+        if (args.length==2 || args.length==4 || args.length==6){
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean parseParameters(String p1,String p2){
+        switch(p1){
+            case "--log2m":
+                log2m = Integer.parseInt(p2);
+                return true;
+            case "--bitmap":
+                bitmap = Integer.parseInt(p2);
+                return true;
+            case "--fraction":
+                fraction = Double.parseDouble(p2);
+                return true;
+            case "--error":
+                error = Double.parseDouble(p2);
+                return true;
+            default:
+                return false;
         }
     }
 
