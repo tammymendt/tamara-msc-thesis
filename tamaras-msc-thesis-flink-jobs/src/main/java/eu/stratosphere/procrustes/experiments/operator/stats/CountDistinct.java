@@ -2,6 +2,7 @@ package eu.stratosphere.procrustes.experiments.operator.stats;
 
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.accumulators.Accumulator;
+import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -21,82 +22,37 @@ public class CountDistinct {
 
     private static final Logger LOG = LoggerFactory.getLogger(CountDistinct.class);
 
-    private static final String ACCUMULATOR_NAME = "op-stats";
-
-    private static final String[] ALGORITHMS = {"hyperloglog", "linearc"};
-
     public static void main(String[] args) throws Exception {
 
         if (!parseParameters(args)) {
-            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--p <algorithm parameter>]");
-            LOG.error("Algorithm options: hyperloglog, linearc");
-            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--p <algorithm parameter>]");
-            System.out.println("Algorithm options: hyperloglog, linearc");
+            LOG.error("Usage: OperatorStatistics <input path>");
+            System.out.println("Usage: OperatorStatistics <input path>");
             return;
         }
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-        DataSet<Tuple2<Integer, Integer>> distinctElements = env.readTextFile(inputPath).flatMap(new CountInt(configOperatorStatistics())).distinct();
+        DataSet<Tuple2<Integer, Integer>> distinctElements = env.readTextFile(inputPath).flatMap(new CountInt()).distinct();
 
         long countDistinct = distinctElements.count();
 
         LOG.info("\nReal Count Distinct: " + countDistinct);
         System.out.println("\nReal Count Distinct: " + countDistinct);
-
-        JobExecutionResult result = env.getLastJobExecutionResult();
-
-        OperatorStatistics globalStats = result.getAccumulatorResult(ACCUMULATOR_NAME);
-        LOG.info("\nGlobal Stats: " + globalStats.toString());
-        System.out.println("\nGlobal Stats: " + globalStats.toString());
     }
 
     // *************************************************************************
     // USER FUNCTIONS
     // *************************************************************************
 
-    public static class CountInt extends RichFlatMapFunction<String, Tuple2<Integer, Integer>> {
-
-        OperatorStatisticsConfig operatorStatisticsConfig;
-
-        Accumulator<Object, Serializable> globalAccumulator;
-
-        Accumulator<Object, Serializable> localAccumulator;
-
-        public CountInt(OperatorStatisticsConfig config) {
-            operatorStatisticsConfig = config;
-        }
-
-        @Override
-        public void open(Configuration parameters) {
-
-            globalAccumulator = getRuntimeContext().getAccumulator(ACCUMULATOR_NAME);
-            if (globalAccumulator == null) {
-                getRuntimeContext().addAccumulator(ACCUMULATOR_NAME, new OperatorStatisticsAccumulator(operatorStatisticsConfig));
-                globalAccumulator = getRuntimeContext().getAccumulator(ACCUMULATOR_NAME);
-            }
-
-            int subTaskIndex = getRuntimeContext().getIndexOfThisSubtask();
-            localAccumulator = getRuntimeContext().getAccumulator(ACCUMULATOR_NAME + "-" + subTaskIndex);
-            if (localAccumulator == null) {
-                getRuntimeContext().addAccumulator(ACCUMULATOR_NAME + "-" + subTaskIndex, new OperatorStatisticsAccumulator(operatorStatisticsConfig));
-                localAccumulator = getRuntimeContext().getAccumulator(ACCUMULATOR_NAME + "-" + subTaskIndex);
-            }
-        }
+    public static class CountInt implements FlatMapFunction<String, Tuple2<Integer, Integer>> {
 
         @Override
         public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
             int intValue;
             try {
                 intValue = Integer.parseInt(value);
-                localAccumulator.add(intValue);
                 out.collect(new Tuple2(intValue, 1));
             } catch (NumberFormatException ex) {}
-        }
-
-        @Override
-        public void close() {
-            globalAccumulator.merge(localAccumulator);
         }
     }
 
@@ -107,53 +63,13 @@ public class CountDistinct {
 
     private static String inputPath;
 
-    private static String algorithm;
-
-    private static int algorithmParam = -1;
-
     private static boolean parseParameters(String[] args) {
 
-        if (args.length == 2 || args.length == 4) {
+        if (args.length == 1) {
             inputPath = args[0];
-            algorithm = args[1];
-            if (!Arrays.asList(ALGORITHMS).contains(algorithm)) {
-                return false;
-            }
-            if (args.length == 4) {
-                if (args[2].equals("--p")) {
-                    algorithmParam = Integer.parseInt(args[3]);
-                    return true;
-                }
-                return false;
-            }
             return true;
         } else {
             return false;
         }
-
-    }
-
-    private static OperatorStatisticsConfig configOperatorStatistics() {
-
-        OperatorStatisticsConfig opStatsConfig = new OperatorStatisticsConfig(false);
-        System.out.println("Parsing configuration parameter");
-        if (algorithm.equals("hyperloglog")) {
-            opStatsConfig.collectCountDistinct = true;
-            opStatsConfig.countDistinctAlgorithm = OperatorStatisticsConfig.CountDistinctAlgorithm.HYPERLOGLOG;
-            if (algorithmParam != -1) {
-                opStatsConfig.setCountDlog2m(algorithmParam);
-            } else {
-                opStatsConfig.setCountDlog2m(10);// Default log2m parameter
-            }
-        } else if (algorithm.equals("linearc")) {
-            opStatsConfig.collectCountDistinct = true;
-            opStatsConfig.countDistinctAlgorithm = OperatorStatisticsConfig.CountDistinctAlgorithm.LINEAR_COUNTING;
-            if (algorithmParam != -1) {
-                opStatsConfig.setCountDbitmap(algorithmParam);
-            } else {
-                opStatsConfig.setCountDbitmap(100000000);// Default bitmapSize parameter
-            }
-        }
-        return opStatsConfig;
     }
 }
