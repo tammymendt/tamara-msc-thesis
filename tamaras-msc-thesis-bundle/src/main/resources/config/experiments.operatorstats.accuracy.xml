@@ -219,7 +219,21 @@
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
             <!-- Data distribution Uniform[10^5] -->
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="count.distinct">
+                    <constructor-arg name="name" value="real.count.distinct.10.5"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # datagen parameters
+                            datagen.path = 10_5
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="linearc.10.5"/>
                     <constructor-arg name="config">
                         <value>
@@ -235,7 +249,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="hyperloglog.10.5"/>
                     <constructor-arg name="config">
                         <value>
@@ -252,7 +266,21 @@
                     </constructor-arg>
                 </bean>
                 <!-- Data distribution Uniform[10^6] -->
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="count.distinct">
+                    <constructor-arg name="name" value="real.count.distinct.10.6"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # datagen parameters
+                            datagen.path = 10_6
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[1000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="linearc.10.6"/>
                     <constructor-arg name="config">
                         <value>
@@ -268,7 +296,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="hyperloglog.10.6"/>
                     <constructor-arg name="config">
                         <value>
@@ -285,7 +313,21 @@
                     </constructor-arg>
                 </bean>
                 <!-- Data distribution Uniform[10^7] -->
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="count.distinct">
+                    <constructor-arg name="name" value="real.count.distinct.10.7"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # datagen parameters
+                            datagen.path = 10_7
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[10000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="linearc.10.7"/>
                     <constructor-arg name="config">
                         <value>
@@ -301,7 +343,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="hyperloglog.10.7"/>
                     <constructor-arg name="config">
                         <value>
@@ -318,7 +360,21 @@
                     </constructor-arg>
                 </bean>
                 <!-- Data distribution Uniform[10^8] -->
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="count.distinct">
+                    <constructor-arg name="name" value="real.count.distinct.10.8"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # datagen parameters
+                            datagen.path = 10_8
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="linearc.10.8"/>
                     <constructor-arg name="config">
                         <value>
@@ -334,7 +390,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="hyperloglog.10.8"/>
                     <constructor-arg name="config">
                         <value>
@@ -351,7 +407,21 @@
                     </constructor-arg>
                 </bean>
                 <!-- Data distribution Uniform[10^9] -->
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="count.distinct">
+                    <constructor-arg name="name" value="real.count.distinct.10.9"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # datagen parameters
+                            datagen.path = 10_9
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[1000000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="linearc.10.9"/>
                     <constructor-arg name="config">
                         <value>
@@ -367,7 +437,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="count.distinct.accuracy.default.param">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="hyperloglog.10.9"/>
                     <constructor-arg name="config">
                         <value>
