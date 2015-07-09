@@ -78,7 +78,7 @@
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->
-            <!--    <bean parent="operator.stats.processing">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.20"/>
                     <constructor-arg name="config">
                         <value>
@@ -209,7 +209,7 @@
                 </bean>
 
                 <!-- 10 nodes -->
-<!--                <bean parent="operator.stats.processing">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.10"/>
                     <constructor-arg name="config">
                         <value>
@@ -355,7 +355,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-<!--                <bean parent="operator.stats.processing">
+                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="counter.05"/>
                     <constructor-arg name="config">
                         <value>
