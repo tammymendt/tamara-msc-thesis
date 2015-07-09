@@ -7,7 +7,7 @@
     <!--************************************************************************
     * Experiments
     *************************************************************************-->
-    <bean id="heavy.hitters" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
+    <bean id="heavy.hitters" parent="experiment.flink-0.9.0-hadoop27" abstract="true">
         <constructor-arg name="command">
             <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.HeavyHitter ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} --cardinality ${operator.stats.cardinality} --fraction ${operator.stats.fraction} --error ${operator.stats.error}</value>
         </constructor-arg>
@@ -21,7 +21,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="count.distinct" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
+    <bean id="count.distinct" parent="experiment.flink-0.9.0-hadoop27" abstract="true">
         <constructor-arg name="command">
             <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.CountDistinct ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
         </constructor-arg>

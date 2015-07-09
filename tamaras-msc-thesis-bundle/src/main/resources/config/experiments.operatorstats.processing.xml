@@ -8,7 +8,7 @@
     *************************************************************************-->
 
     <bean id="datagen.flink.int" class="eu.stratosphere.peel.extensions.flink.beans.job.FlinkJob">
-        <constructor-arg name="runner" ref="flink-0.9-FLINK-1297"/>
+        <constructor-arg name="runner" ref="flink-0.9.0-hadoop27"/>
         <constructor-arg name="command">
             <value>--class eu.stratosphere.procrustes.datagen.flink.FlinkIntGenerator ${app.path.datagens}/tamaras-msc-thesis-flink-datagens-1.0-SNAPSHOT.jar ${system.default.config.parallelism.total} ${datagen.tuples.per.task} ${datagen.distribution} ${system.hadoop-2.path.input}/operatorstats/${datagen.path}</value>
         </constructor-arg>
@@ -41,7 +41,7 @@
         <constructor-arg name="fs" ref="hdfs-2.7.1"/>
     </bean>
 
-    <bean id="operator.stats.processing" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
+    <bean id="operator.stats.processing" parent="experiment.flink-0.9.0-hadoop27" abstract="true">
         <constructor-arg name="command">
             <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm}</value>
         </constructor-arg>
@@ -55,7 +55,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="operator.stats.processing.with.algorithm.params" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
+    <bean id="operator.stats.processing.with.algorithm.params" parent="experiment.flink-0.9.0-hadoop27" abstract="true">
         <constructor-arg name="command">
             <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} --fraction ${operator.stats.fraction} --error ${operator.stats.error}</value>
         </constructor-arg>

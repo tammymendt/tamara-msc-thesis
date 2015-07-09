@@ -13,13 +13,13 @@
         <constructor-arg name="runs" value="1"/>
     </bean>
 
-    <bean id="experiment.flink-0.9-FLINK-1297" class="eu.stratosphere.peel.extensions.flink.beans.experiment.FlinkExperiment" abstract="true">
-        <constructor-arg name="runner" ref="flink-0.9-FLINK-1297"/>
+    <bean id="experiment.flink-0.9.0-hadoop27" class="eu.stratosphere.peel.extensions.flink.beans.experiment.FlinkExperiment" abstract="true">
+        <constructor-arg name="runner" ref="flink-0.9.0-hadoop27"/>
         <constructor-arg name="runs" value="7"/>
     </bean>
 
-    <bean id="experiment.flink-0.9-FLINK-1297-run-1" class="eu.stratosphere.peel.extensions.flink.beans.experiment.FlinkExperiment" abstract="true">
-        <constructor-arg name="runner" ref="flink-0.9-FLINK-1297"/>
+    <bean id="experiment.flink-0.9.0-hadoop27-run-1" class="eu.stratosphere.peel.extensions.flink.beans.experiment.FlinkExperiment" abstract="true">
+        <constructor-arg name="runner" ref="flink-0.9.0-hadoop27"/>
         <constructor-arg name="runs" value="1"/>
     </bean>
 
