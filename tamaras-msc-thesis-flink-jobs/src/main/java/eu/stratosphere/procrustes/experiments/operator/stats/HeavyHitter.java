@@ -1,6 +1,7 @@
 package eu.stratosphere.procrustes.experiments.operator.stats;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -29,7 +30,7 @@ public class HeavyHitter {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         DataSet<Tuple3<Integer, Long,String>> elementFrequencies =
-                env.readTextFile(inputPath).flatMap(new CountInt())
+                env.readTextFile(inputPath).map(new CountInt())
                         .groupBy(0).sum(1).flatMap(new CheckFrequency(frequencyLowerBound,frequency));
         Collection collection = elementFrequencies.collect();
 
@@ -45,16 +46,17 @@ public class HeavyHitter {
     // USER FUNCTIONS
     // *************************************************************************
 
-    public static class CountInt implements FlatMapFunction<String, Tuple2<Integer, Long>> {
+    public static class CountInt implements MapFunction<String, Tuple2<Integer, Long>> {
 
         @Override
-        public void flatMap(String value, Collector<Tuple2<Integer, Long>> out) throws Exception {
+        public Tuple2<Integer,Long> map(String value) throws Exception {
             int intValue;
             try {
                 intValue = Integer.parseInt(value);
-                out.collect(new Tuple2(intValue, 1));
+                return new Tuple2(intValue, 1);
             } catch (NumberFormatException ex) {
                 LOG.warn("Number format exception: " + value);
+                throw ex;
             }
         }
     }
