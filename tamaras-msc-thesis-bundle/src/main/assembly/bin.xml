@@ -22,10 +22,9 @@
             <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
             <excludes>
-                <exclude>eu.stratosphere:tamaras-msc-thesis-flink-datagens</exclude>
-                <exclude>eu.stratosphere:tamaras-msc-thesis-spark-datagens</exclude>
-                <exclude>eu.stratosphere:tamaras-msc-thesis-spark-jobs</exclude>
-                <exclude>eu.stratosphere:tamaras-msc-thesis-flink-jobs</exclude>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-*-datagens</exclude>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-*-jobs</exclude>
+                <exclude>eu.stratosphere:tamaras-msc-thesis-*-apps</exclude>
             </excludes>
         </dependencySet>
         <!-- datagens -->
@@ -39,13 +38,12 @@
             <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
             <includes>
-                <include>eu.stratosphere:tamaras-msc-thesis-flink-datagens</include>
-                <include>eu.stratosphere:tamaras-msc-thesis-spark-datagens</include>
+                <include>eu.stratosphere:tamaras-msc-thesis-*-datagens</include>
             </includes>
         </dependencySet>
-        <!-- jobs -->
+        <!-- apps -->
         <dependencySet>
-            <outputDirectory>jobs</outputDirectory>
+            <outputDirectory>apps</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>true</useProjectArtifact>
             <useProjectAttachments>false</useProjectAttachments>
@@ -54,8 +52,8 @@
             <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
             <includes>
-                <include>eu.stratosphere:tamaras-msc-thesis-flink-jobs</include>
-                <include>eu.stratosphere:tamaras-msc-thesis-spark-jobs</include>
+                <include>eu.stratosphere:tamaras-msc-thesis-*-jobs</include>
+                <include>eu.stratosphere:tamaras-msc-thesis-*-apps</include>
             </includes>
         </dependencySet>
     </dependencySets>
