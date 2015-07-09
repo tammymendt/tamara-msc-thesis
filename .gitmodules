@@ -1,9 +1,12 @@
 [submodule "tamaras-msc-thesis-bundle/src/main/resources/config/cloud-7"]
 	path = tamaras-msc-thesis-bundle/src/main/resources/config/cloud-7
-	url = git@github.com:TU-Berlin-DIMA/peelconf.cloud-7.git
+	url = git@github.com:stratosphere/peelconfig.cloud-7.git
 [submodule "tamaras-msc-thesis-bundle/src/main/resources/config/cloud-11"]
 	path = tamaras-msc-thesis-bundle/src/main/resources/config/cloud-11
-	url = git@github.com:TU-Berlin-DIMA/peelconf.cloud-11.git
+	url = git@github.com:stratosphere/peelconfig.cloud-11.git
 [submodule "tamaras-msc-thesis-bundle/src/main/resources/config/alexander-t540p"]
 	path = tamaras-msc-thesis-bundle/src/main/resources/config/alexander-t540p
-	url = git@github.com:aalexandrov/peelconf.alexander-t540p.git
+	url = git@github.com:aalexandrov/peelconfig.alexander-t540p.git
+[submodule "tamaras-msc-thesis-bundle/src/main/resources/config/wally"]
+	path = tamaras-msc-thesis-bundle/src/main/resources/config/wally
+	url = git@github.com:stratosphere/peelconfig.wally.git
