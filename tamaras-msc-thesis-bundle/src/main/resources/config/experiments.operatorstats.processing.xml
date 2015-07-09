@@ -28,7 +28,7 @@
     <bean id="dataset.int" class="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
         <constructor-arg name="src" ref="datagen.flink.int"/>
         <constructor-arg name="dst" value="${system.hadoop-2.path.input}/operatorstats/${datagen.path}"/>
-        <constructor-arg name="fs" ref="hdfs-2.4.1"/>
+        <constructor-arg name="fs" ref="hdfs-2.7.1"/>
     </bean>
 
     <!--************************************************************************
@@ -38,7 +38,7 @@
     <!-- Experiment output -->
     <bean id="experiment.output.hdfs.operator.stats" class="eu.stratosphere.peel.core.beans.data.ExperimentOutput">
         <constructor-arg name="path" value="${system.hadoop-2.path.output}/operatorstats/output"/>
-        <constructor-arg name="fs" ref="hdfs-2.4.1"/>
+        <constructor-arg name="fs" ref="hdfs-2.7.1"/>
     </bean>
 
     <bean id="operator.stats.processing" parent="experiment.flink-0.9-FLINK-1297" abstract="true">
