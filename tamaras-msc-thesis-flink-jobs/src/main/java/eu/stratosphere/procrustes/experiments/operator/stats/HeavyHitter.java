@@ -28,7 +28,7 @@ public class HeavyHitter {
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-        DataSet<Tuple3<Integer, Integer,String>> elementFrequencies =
+        DataSet<Tuple3<Integer, Long,String>> elementFrequencies =
                 env.readTextFile(inputPath).flatMap(new CountInt())
                         .groupBy(0).sum(1).flatMap(new CheckFrequency(frequencyLowerBound,frequency));
         Collection collection = elementFrequencies.collect();
@@ -45,10 +45,10 @@ public class HeavyHitter {
     // USER FUNCTIONS
     // *************************************************************************
 
-    public static class CountInt implements FlatMapFunction<String, Tuple2<Integer, Integer>> {
+    public static class CountInt implements FlatMapFunction<String, Tuple2<Integer, Long>> {
 
         @Override
-        public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
+        public void flatMap(String value, Collector<Tuple2<Integer, Long>> out) throws Exception {
             int intValue;
             try {
                 intValue = Integer.parseInt(value);
@@ -59,7 +59,7 @@ public class HeavyHitter {
         }
     }
 
-    public static class CheckFrequency implements FlatMapFunction<Tuple2<Integer, Integer>, Tuple3<Integer,Integer,String>> {
+    public static class CheckFrequency implements FlatMapFunction<Tuple2<Integer, Long>, Tuple3<Integer,Long,String>> {
 
         long frequencyLowerBound = 0;
         long frequency = 0;
@@ -70,7 +70,7 @@ public class HeavyHitter {
         }
 
         @Override
-        public void flatMap(Tuple2<Integer, Integer> value, Collector<Tuple3<Integer, Integer, String>> out) throws Exception {
+        public void flatMap(Tuple2<Integer, Long> value, Collector<Tuple3<Integer, Long, String>> out) throws Exception {
             if (value.f1>=frequency){
                 out.collect(new Tuple3(value.f0,value.f1,"True Frequent"));
             }else if (value.f1>=frequencyLowerBound){
