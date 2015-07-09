@@ -78,7 +78,7 @@
         <constructor-arg name="experiments">
             <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
                 <!-- 20 nodes -->
-                <bean parent="operator.stats.processing">
+            <!--    <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.20"/>
                     <constructor-arg name="config">
                         <value>
@@ -189,10 +189,27 @@
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
+                </bean>-->
+
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="histogram.20"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = histogram
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
                 </bean>
 
                 <!-- 10 nodes -->
-                <bean parent="operator.stats.processing">
+<!--                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="none.10"/>
                     <constructor-arg name="config">
                         <value>
@@ -303,6 +320,22 @@
                             datagen.distribution = "Uniform[100000]"
                         </value>
                     </constructor-arg>
+                </bean>-->
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="histogram.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 80
+                            system.default.config.slaves = ${env.hosts.slaves.only10}
+                            # experiment parameters
+                            operator.stats.algorithm = histogram
+                            # datagen parameters
+                            datagen.path = 20B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
                 </bean>
 
                 <!-- 05 nodes -->
@@ -322,7 +355,7 @@
                         </value>
                     </constructor-arg>
                 </bean>
-                <bean parent="operator.stats.processing">
+<!--                <bean parent="operator.stats.processing">
                     <constructor-arg name="name" value="counter.05"/>
                     <constructor-arg name="config">
                         <value>
@@ -411,6 +444,22 @@
                             system.default.config.slaves = ${env.hosts.slaves.only05}
                             # experiment parameters
                             operator.stats.algorithm = lossy
+                            # datagen parameters
+                            datagen.path = 10B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>-->
+                <bean parent="operator.stats.processing">
+                    <constructor-arg name="name" value="histogram.05"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 40
+                            system.default.config.slaves = ${env.hosts.slaves.only05}
+                            # experiment parameters
+                            operator.stats.algorithm = histogram
                             # datagen parameters
                             datagen.path = 10B
                             datagen.tuples.per.task = 250000000

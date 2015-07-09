@@ -1,7 +1,12 @@
 .buildpath
 .project
 .git*
+.idea
 datasets
 log
 results
 systems
+downloads
+lib
+jobs
+datagens
