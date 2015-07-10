@@ -61,6 +61,12 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <artifactId>flink-operator-stats</artifactId>
+            <version>0.10-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+<!--        <dependency>
+            <groupId>org.apache.flink</groupId>
             <artifactId>flink-contrib</artifactId>
             <version>${flink.version}</version>
             <scope>compile</scope>
@@ -74,7 +80,7 @@
                     <artifactId>flink-test-utils</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>

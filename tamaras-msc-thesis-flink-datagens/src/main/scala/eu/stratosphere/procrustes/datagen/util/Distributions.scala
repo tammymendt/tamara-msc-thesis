@@ -8,7 +8,7 @@ object Distributions {
 
   case class Gaussian(mu: Double, sigma: Double) extends Distribution {
     def sample(rand: RanHash) = {
-      sigma * rand.nextGaussian()
+      sigma * rand.nextGaussian() + mu
     }
   }
 

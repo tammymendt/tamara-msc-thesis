@@ -15,7 +15,7 @@
 
     <bean id="experiment.flink-0.9.0-hadoop27" class="eu.stratosphere.peel.extensions.flink.beans.experiment.FlinkExperiment" abstract="true">
         <constructor-arg name="runner" ref="flink-0.9.0-hadoop27"/>
-        <constructor-arg name="runs" value="7"/>
+        <constructor-arg name="runs" value="5"/>
     </bean>
 
     <bean id="experiment.flink-0.9.0-hadoop27-run-1" class="eu.stratosphere.peel.extensions.flink.beans.experiment.FlinkExperiment" abstract="true">

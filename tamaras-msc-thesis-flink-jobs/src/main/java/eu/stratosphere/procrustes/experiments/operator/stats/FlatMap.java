@@ -4,9 +4,8 @@ import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.accumulators.Accumulator;
 import org.apache.flink.api.common.accumulators.Histogram;
 import org.apache.flink.api.common.accumulators.IntCounter;
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.functions.RichFlatMapFunction;
+import org.apache.flink.api.common.accumulators.LongCounter;
+import org.apache.flink.api.common.functions.*;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -33,24 +32,24 @@ public class FlatMap {
     public static void main(String[] args) throws Exception {
 
         if (!parseParameters(args)) {
-            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <param value>]");
-            LOG.error("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc, counter, all");
-            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction <param value>]");
-            System.out.println("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc, counter, all");
+            LOG.error("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction|--confidence <param value>]");
+            LOG.error("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc, counter, histogram, all");
+            System.out.println("Usage: OperatorStatistics <input path> <algorithm> [--log2m|--bitmap|--error|--fraction|--confidence <param value>]");
+            System.out.println("Algorithm options: none, minmax, lossy, countmin, hyperloglog, linearc, counter, histogram, all");
             return;
         }
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         if (algorithm.equals("none")) {
-            env.readTextFile(inputPath).flatMap(new CountInt()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
+            env.readTextFile(inputPath).map(new CountInt()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
         } else if (algorithm.equals("counter")) {
-            env.readTextFile(inputPath).flatMap(new CountIntAccumulator()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
+            env.readTextFile(inputPath).map(new CountLongAccumulator()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
         } else if (algorithm.equals("histogram")) {
-            env.readTextFile(inputPath).flatMap(new CountHistogramAccumulator()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
+            env.readTextFile(inputPath).map(new CountHistogramAccumulator()).filter(new MultipleOfFive()).output(new DiscardingOutputFormat());
         } else {
             env.readTextFile(inputPath)
-               .flatMap(new CountIntOpStatsAccumulator(configOperatorStatistics()))
+               .map(new CountIntOpStatsAccumulator(configOperatorStatistics()))
                .filter(new MultipleOfFive())
                .output(new DiscardingOutputFormat());
         }
@@ -61,7 +60,7 @@ public class FlatMap {
             LOG.info("\nJob finished. No stats collected.");
             System.out.println("\nJob finished. No stats collected.");
         } else if (algorithm.equals("counter")) {
-            int cardinality = result.getIntCounterResult(ACCUMULATOR_NAME);
+            long cardinality = result.getAccumulatorResult(ACCUMULATOR_NAME);
             LOG.info("\nTotal Cardinality: " + cardinality);
             System.out.println("\nTotal Cardinality: " + cardinality);
         } else if (algorithm.equals("histogram")) {
@@ -80,19 +79,15 @@ public class FlatMap {
     // USER FUNCTIONS
     // *************************************************************************
 
-    public static class CountInt implements FlatMapFunction<String, Tuple2<Integer, Integer>> {
+    public static class CountInt implements MapFunction<String, Tuple2<Integer, Integer>> {
 
         @Override
-        public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
-            int intValue;
-            try {
-                intValue = Integer.parseInt(value);
-                out.collect(new Tuple2(intValue, 1));
-            } catch (NumberFormatException ex) {}
+        public Tuple2<Integer,Integer> map(String value) throws Exception {
+            return new Tuple2<>(Integer.parseInt(value),1);
         }
     }
 
-    public static class CountHistogramAccumulator extends RichFlatMapFunction<String, Tuple2<Integer, Integer>> {
+    public static class CountHistogramAccumulator extends RichMapFunction<String, Tuple2<Integer, Integer>> {
 
         Histogram accumulator;
 
@@ -103,38 +98,32 @@ public class FlatMap {
         }
 
         @Override
-        public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
-            int intValue;
-            try {
-                intValue = Integer.parseInt(value);
-                accumulator.add(intValue);
-                out.collect(new Tuple2(intValue, 1));
-            } catch (NumberFormatException ex) {}
+        public Tuple2<Integer,Integer> map(String value) throws Exception {
+            int intValue = Integer.parseInt(value);
+            accumulator.add(intValue);
+             return new Tuple2(intValue, 1);
         }
     }
 
-    public static class CountIntAccumulator extends RichFlatMapFunction<String, Tuple2<Integer, Integer>> {
+    public static class CountLongAccumulator extends RichMapFunction<String, Tuple2<Integer, Integer>> {
 
-        IntCounter accumulator;
+        LongCounter accumulator;
 
         @Override
         public void open(Configuration parameters) {
 
-            accumulator = getRuntimeContext().getIntCounter(ACCUMULATOR_NAME);
+            accumulator = getRuntimeContext().getLongCounter(ACCUMULATOR_NAME);
         }
 
         @Override
-        public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
-            int intValue;
-            try {
-                intValue = Integer.parseInt(value);
-                accumulator.add(1);
-                out.collect(new Tuple2(intValue, 1));
-            } catch (NumberFormatException ex) {}
+        public Tuple2<Integer,Integer> map(String value) throws Exception {
+            int intValue = Integer.parseInt(value);
+            accumulator.add(1L);
+            return new Tuple2(intValue, 1);
         }
     }
 
-    public static class CountIntOpStatsAccumulator extends RichFlatMapFunction<String, Tuple2<Integer, Integer>> {
+    public static class CountIntOpStatsAccumulator extends RichMapFunction<String, Tuple2<Integer, Integer>> {
 
         OperatorStatisticsConfig operatorStatisticsConfig;
 
@@ -155,13 +144,10 @@ public class FlatMap {
         }
 
         @Override
-        public void flatMap(String value, Collector<Tuple2<Integer, Integer>> out) throws Exception {
-            int intValue;
-            try {
-                intValue = Integer.parseInt(value);
-                accumulator.add(intValue);
-                out.collect(new Tuple2(intValue, 1));
-            } catch (NumberFormatException ex) {}
+        public Tuple2<Integer,Integer> map(String value) throws Exception {
+            int intValue = Integer.parseInt(value);
+            accumulator.add(intValue);
+            return new Tuple2(intValue, 1);
         }
     }
 
@@ -183,11 +169,13 @@ public class FlatMap {
 
     private static int log2m = 10;
 
-    private static int bitmap = 100000000;
+    private static int bitmap = 1000000;
 
-    private static double fraction = 0.00125;
+    private static double fraction = 0.05;
 
-    private static double error = 0.0001;
+    private static double error = 0.0005;
+
+    private static double confidence = 0.99;
 
     private static boolean parseParameters(String[] args) {
 
@@ -199,16 +187,20 @@ public class FlatMap {
                 return false;
             }
         }
-        if ((args.length >= 4) && !parseParameters(args[2],args[3])) {
-            return false;
-        }
-        if ((args.length == 6) && !parseParameters(args[4],args[5])){
-            return false;
-        }
-        if (args.length==2 || args.length==4 || args.length==6){
+        if (args.length>2){
+            if (args.length % 2 == 0) {
+                for (int i = 2; i < args.length - 1; i += 2) {
+                    if (!parseParameters(args[i], args[i + 1])) {
+                        return false;
+                    }
+                }
+                return true;
+            }else {
+                return false;
+            }
+        }else {
             return true;
         }
-        return false;
     }
 
     private static boolean parseParameters(String p1,String p2){
@@ -224,6 +216,9 @@ public class FlatMap {
                 return true;
             case "--error":
                 error = Double.parseDouble(p2);
+                return true;
+            case "--confidence":
+                confidence = Double.parseDouble(p2);
                 return true;
             default:
                 return false;
@@ -255,6 +250,7 @@ public class FlatMap {
             opStatsConfig.heavyHitterAlgorithm = OperatorStatisticsConfig.HeavyHitterAlgorithm.COUNT_MIN_SKETCH;
             opStatsConfig.setHeavyHitterError(error);
             opStatsConfig.setHeavyHitterFraction(fraction);
+            opStatsConfig.setHeavyHitterConfidence(confidence);
         } else if (algorithm.equals("all")) {
             opStatsConfig = new OperatorStatisticsConfig(true);
             opStatsConfig.countDistinctAlgorithm = OperatorStatisticsConfig.CountDistinctAlgorithm.HYPERLOGLOG;

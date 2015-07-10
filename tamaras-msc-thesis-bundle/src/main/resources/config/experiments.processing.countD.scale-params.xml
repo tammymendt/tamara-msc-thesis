@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--************************************************************************
+    * Experiments
+    *************************************************************************-->
+
+    <bean id="operator.stats.processing.with.log2m.param" parent="experiment.flink-0.9.0-hadoop27" abstract="true">
+        <constructor-arg name="command">
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} --log2m ${operator.stats.log2m}</value>
+        </constructor-arg>
+        <constructor-arg name="input">
+            <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
+                <ref bean="dataset.int"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="output">
+            <ref bean="experiment.output.hdfs.operator.stats"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="operator.stats.processing.with.bitmap.param" parent="experiment.flink-0.9.0-hadoop27" abstract="true">
+        <constructor-arg name="command">
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} ${operator.stats.algorithm} --bitmap ${operator.stats.bitmap}</value>
+        </constructor-arg>
+        <constructor-arg name="input">
+            <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
+                <ref bean="dataset.int"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="output">
+            <ref bean="experiment.output.hdfs.operator.stats"/>
+        </constructor-arg>
+    </bean>
+    
+    <!--************************************************************************
+    * Experiments Runs
+    *************************************************************************-->
+    <bean id="processing.scale-log2m.40B.uniform.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.8"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 8
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 10
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.12"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 12
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.14"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 14
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="processing.scale-log2m.40B.pareto.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.8"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 8
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.10"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 10
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.12"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 12
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.log2m.param">
+                    <constructor-arg name="name" value="log2m.14"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = hyperloglog
+                            operator.stats.log2m = 14
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="processing.scale-bitmap.40B.uniform.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.5"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 100000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.6"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 1000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.7"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 10000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.8"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 100000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "Uniform[100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="processing.scale-bitmap.40B.pareto.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.5"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 100000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.6"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 1000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.7"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 10000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="operator.stats.processing.with.bitmap.param">
+                    <constructor-arg name="name" value="bitmap.10.8"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.algorithm = linearc
+                            operator.stats.bitmap = 100000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>

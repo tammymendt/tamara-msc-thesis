@@ -32,10 +32,9 @@
         </constructor-arg>
     </bean>
 
-    <!-- Custom Flink bean based on the FLINK-1297 feature branch -->
     <bean id="flink-0.9.0-hadoop27" class="eu.stratosphere.peel.extensions.flink.beans.system.Flink" parent="system">
         <constructor-arg name="version" value="0.9"/>
-        <constructor-arg name="lifespan" value="SUITE"/>
+        <constructor-arg name="lifespan" value="EXPERIMENT"/>
         <constructor-arg name="dependencies">
             <set value-type="eu.stratosphere.peel.core.beans.system.System">
                 <ref bean="hdfs-2.7.1"/>

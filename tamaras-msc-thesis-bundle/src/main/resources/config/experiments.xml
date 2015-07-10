@@ -8,8 +8,19 @@
     <!-- base experiment beans -->
     <import resource="experiments.base.xml"/>
     <!-- operatorstats processing experiment beans -->
-    <import resource="experiments.operatorstats.processing.xml"/>
-    <!-- operatorstats accuracy experiment beans -->
-    <import resource="experiments.operatorstats.accuracy.xml"/>
+    <import resource="experiments.processing.scale-out.xml"/>
 
+    <import resource="experiments.processing.countD.scale-params.xml"/>
+
+    <import resource="experiments.processing.heavyhitters.scale-fraction.xml"/>
+
+    <import resource="experiments.processing.heavyhitters.scale-confidence.xml"/>
+
+    <import resource="experiments.accuracy.heavyhitters.scale-out.xml"/>
+
+    <import resource="experiments.accuracy.heavyhitters.scale-error.xml"/>
+
+    <import resource="experiments.accuracy.heavyhitters.scale-confidence.xml"/>
+
+    <import resource="experiments.accuracy.scale-countD.xml"/>
 </beans>

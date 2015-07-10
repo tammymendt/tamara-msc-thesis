@@ -29,7 +29,7 @@ public class HeavyHitter {
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-        DataSet<Tuple3<Integer, Long,String>> elementFrequencies =
+        DataSet<Tuple3<Integer, Long, String>> elementFrequencies =
                 env.readTextFile(inputPath).map(new CountInt())
                         .groupBy(0).sum(1).flatMap(new CheckFrequency(frequencyLowerBound,frequency));
         Collection collection = elementFrequencies.collect();
@@ -53,7 +53,7 @@ public class HeavyHitter {
             int intValue;
             try {
                 intValue = Integer.parseInt(value);
-                return new Tuple2(intValue, 1);
+                return new Tuple2(intValue, 1L);
             } catch (NumberFormatException ex) {
                 LOG.warn("Number format exception: " + value);
                 throw ex;
@@ -61,10 +61,10 @@ public class HeavyHitter {
         }
     }
 
-    public static class CheckFrequency implements FlatMapFunction<Tuple2<Integer, Long>, Tuple3<Integer,Long,String>> {
+    public static class CheckFrequency implements FlatMapFunction<Tuple2<Integer, Long>, Tuple3<Integer, Long, String>> {
 
-        long frequencyLowerBound = 0;
-        long frequency = 0;
+        long frequencyLowerBound = 0L;
+        long frequency = 0L;
 
         public CheckFrequency(long frequencyLowerBound,long frequency) {
             this.frequencyLowerBound = frequencyLowerBound;

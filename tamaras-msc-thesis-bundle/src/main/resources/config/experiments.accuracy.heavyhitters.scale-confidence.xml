@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--************************************************************************
+    * Experiments
+    *************************************************************************-->
+
+    <bean id="countmin.with.all.params" parent="experiment.flink-0.9.0-hadoop27-run-1" abstract="true">
+        <constructor-arg name="command">
+            <value>-v -c eu.stratosphere.procrustes.experiments.operator.stats.FlatMap ${app.path.apps}/tamaras-msc-thesis-flink-jobs-1.0-SNAPSHOT.jar ${system.hadoop-2.path.input}/operatorstats/${datagen.path} countmin --confidence ${operator.stats.confidence} --error ${operator.stats.error} --fraction ${operator.stats.fraction}</value>
+        </constructor-arg>
+        <constructor-arg name="input">
+            <set value-type="eu.stratosphere.peel.core.beans.data.GeneratedDataSet">
+                <ref bean="dataset.int"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="output">
+            <ref bean="experiment.output.hdfs.operator.stats"/>
+        </constructor-arg>
+    </bean>
+
+    <!--************************************************************************
+    * Experiments Runs
+    *************************************************************************-->
+
+    <!-- accuracy experiment on 20 nodes with 10B total elements per node & pareto distribution -->
+    <!--Fix the fraction to 0.001 and vary error-->
+    <bean id="accuracy.scale-confidence.40B.pareto.20.nodes" class="eu.stratosphere.peel.core.beans.experiment.ExperimentSuite">
+        <constructor-arg name="experiments">
+            <list value-type="eu.stratosphere.peel.core.beans.experiment.Experiment">
+
+                <bean parent="heavy.hitters">
+                    <constructor-arg name="name" value="real.heavy.hitters"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            operator.stats.cardinality = 40000000000
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="countmin.with.all.params">
+                    <constructor-arg name="name" value="confidence.85"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.confidence = 0.85
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="countmin.with.all.params">
+                    <constructor-arg name="name" value="confidence.9"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.confidence = 0.9
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="countmin.with.all.params">
+                    <constructor-arg name="name" value="confidence.95"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.confidence = 0.95
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+                <bean parent="countmin.with.all.params">
+                    <constructor-arg name="name" value="confidence.99"/>
+                    <constructor-arg name="config">
+                        <value>
+                            # common system parameters
+                            system.default.config.parallelism.total = 160
+                            system.default.config.slaves = ${env.hosts.slaves.only20}
+                            # experiment parameters
+                            operator.stats.confidence = 0.99
+                            operator.stats.fraction = 0.001
+                            operator.stats.error = 0.0001
+                            # datagen parameters
+                            datagen.path = 40B
+                            datagen.tuples.per.task = 250000000
+                            datagen.distribution = "TruncIntPareto[1,100000]"
+                        </value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+</beans>
